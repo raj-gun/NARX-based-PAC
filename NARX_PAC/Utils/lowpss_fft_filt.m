@@ -1,27 +1,40 @@
 function [data] = lowpss_fft_filt(data_raw,Fs,Fct,transition_gap)
+%LOWPSS_FFT_FILT Apply a smooth zero-phase low-pass filter in the FFT domain.
+%   The routine multiplies the two-sided spectrum by an even cosine-roll-off
+%   window and returns the real inverse FFT. The symmetric frequency response
+%   avoids an imposed phase shift.
+%   Inputs
+%   ------
+%   data_raw        : Signal vector to filter.
+%   Fs              : Sampling frequency in Hz.
+%   Fct             : Passband cutoff frequency in Hz.
+%   transition_gap  : Transition half-width in Hz around Fct.
+%   Output
+%   ------
+%   data            : Low-pass-filtered real signal.
+
+%% Construct the low-pass window and filter the spectrum
 N = length(data_raw);
 data_fft = fft(data_raw);
 w = 0:Fs/N:Fs-(Fs/N); %freq_rmv_ind = (w>=f1 & w<=f2) | (w>=(Fs-f2) & w<=(Fs-f1));
 
-% Fc_freq_ind = floor(((Fc/Fs)*N) + 1);
-% Fc_freq_ind_mrr = floor((((Fs-Fc)/Fs)*N) + 1);
-%freq_rmv_ind = zeros(size(w));
-%freq_rmv_ind([Fc_freq_ind-K:Fc_freq_ind+K, Fc_freq_ind_mrr-K:Fc_freq_ind_mrr+K]) = 1;
-
-% [~, Fc_freq_ind] = min(abs(w-Fct));
 Fc_freq_ind = floor( ( (Fct/Fs)*N ) )+1;
 
 W_shifted = smooth_lwpss_fft_window(w(Fc_freq_ind), transition_gap, N, Fs); 
 
 W_shifted = W_shifted./max(abs(W_shifted)); %Normalise the window such that max in 1
 
-% figure;stem(w,W_shifted);
 
 data_fft_rmv = data_fft.*W_shifted;
 data = ifft(data_fft_rmv,'symmetric');
 end
 
 function [W_shifted] = smooth_lwpss_fft_window(Fct, transition_gap, fftn, Fs)
+%SMOOTH_LWPSS_FFT_WINDOW Build an even cosine-roll-off low-pass window.
+%   Inputs define the cutoff, transition width, FFT length, and sampling
+%   rate. Output W_SHIFTED follows MATLAB FFT order.
+%   The returned vector is shifted to MATLAB FFT ordering, with zero
+%   frequency at index 1.
 
 fft_res = Fs/fftn;
 freqs = (-Fs/2):fft_res:(Fs/2)-fft_res;
