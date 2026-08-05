@@ -16,10 +16,9 @@
 
 %% Reset the workspace and configure external paths
 clear all;clc;close all;
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\NonSysID\NonSysID-main\NonSysID\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\NonSysID-i\NonSysID-i\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NonSysID_cpy23_i\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NonSysID_cpy23_i\Utils');
+addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\NonSysID-i\');
+addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\');
+addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils');
 %% Load a saved NARX-PAC experiment and inspect its comodulogram
 file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Results\MISO_NARX\SyntheticData\';
 file_name = '7-63_pinknoise';
