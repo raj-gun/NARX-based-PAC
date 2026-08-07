@@ -1,16 +1,14 @@
-%MULTISMPL_PLTS_L Assemble the Figures 23 and 24 repeatability comparisons.
-%   Saved median comodulograms from 100 realisations of the one-band and
-%   two-band experiments are loaded and compared across NARX-PAC and the
-%   conventional methods, with the true coupling bands annotated.
+%MULTISMPL_PLTS_L Create the repeatability comparisons in Figures 23 and 24.
+%   The script loads median comodulograms from 100 realisations of the
+%   single-band and two-band experiments, compares NARX-PAC with the
+%   conventional methods, and marks the known coupled frequency bands.
 %
 clear all;clc;close all;
 
-%% Bounding box
+%% Define coupling-region annotations
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 
-%% Load saved experiment results
-
-%% Load saved data
+%% Load the single-band experiment results
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F2_3_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
@@ -20,7 +18,7 @@ Comods_PP_intrmd = Comods_intrmd_mat;
 Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_multsmpl_6-7_55-60.mat']);
 
-%% Plots
+%% Plot the single-band repeatability comparison
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_1 = rect_pos_box(LF_freq_1, HF_freq_1, fL_diff, fH_diff);
 
@@ -68,9 +66,8 @@ rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
 
-%% Begin the two-band repeatability comparison
+%% Load the two-band experiment results
 clear;clc;
-%% Load saved data
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_3_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
@@ -80,7 +77,7 @@ Comods_PP_intrmd = Comods_intrmd_mat;
 Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_multsmpl_9-10__80-70__35-40.mat']);
 
-%% Plots
+%% Plot the two-band repeatability comparison
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_1 = rect_pos_box(LF_freq_1, HF_freq_1, fL_diff, fH_diff);
 rect_pos_2 = rect_pos_box(LF_freq_1, HF_freq_2, fL_diff, fH_diff);
