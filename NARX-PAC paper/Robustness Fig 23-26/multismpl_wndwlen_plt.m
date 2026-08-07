@@ -1,11 +1,11 @@
-%MULTISMPL_WNDWLEN_PLT Assemble the Figure 26 short-window robustness comparison.
-%   Saved NARX-PAC median maps for 2, 3, 5, and 10 s windows are loaded for
-%   the one-band and two-band experiments. The script plots the
-%   intermodulation-screened maps with the true coupling bands marked.
+%MULTISMPL_WNDWLEN_PLT Create the short-window comparison in Figure 26.
+%   The script loads median post-processed NARX-PAC maps for 2, 3, and 5 s
+%   windows from the single-band and two-band experiments, then marks the
+%   known coupled frequency bands.
 %
 clear all;clc;close all;
 
-%% Load saved data
+%% Load the short-window experiment results
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
 dat_1_2 = load([MISO_NARX_dir,'F2_3_2s_wrk_PP.mat']); 
 Comod_NARX_PAC_1_2 = {dat_1_2.Comods_intrmd_mat, dat_1_2.fH_vals, dat_1_2.fL_vals};
@@ -39,7 +39,7 @@ fL_diff_1 = mean(abs(diff(dat_2_2.fL_vals))); fH_diff_1 = mean(abs(diff(dat_2_2.
 
 clear dat_2_2 dat_2_3 dat_2_5;
 
-%% Plots
+%% Plot the short-window comparison
  
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 
@@ -53,7 +53,7 @@ rect_pos_2 = rect_pos_box(LF_freq_1, HF_freq_2, fL_diff_1, fH_diff_1);
 figure; tiledlayout(2,3, 'TileSpacing', 'loose', 'Padding', 'loose');
 font_size = 19;
 
-% Compute the plotted matrices first
+% Compute the median maps.
 Z_1_2 = median(Comod_NARX_PAC_1_2{1,1}, 3);
 Z_1_3 = median(Comod_NARX_PAC_1_3{1,1}, 3);
 Z_1_5 = median(Comod_NARX_PAC_1_5{1,1}, 3);
@@ -62,9 +62,9 @@ Z_2_2 = median(Comod_NARX_PAC_2_2{1,1}, 3);
 Z_2_3 = median(Comod_NARX_PAC_2_3{1,1}, 3);
 Z_2_5 = median(Comod_NARX_PAC_2_5{1,1}, 3);
 
-% Common colour range for all plots
+% Use a common colour range across all panels.
 allZ = [Z_1_2(:); Z_1_3(:); Z_1_5(:); Z_2_2(:); Z_2_3(:); Z_2_5(:)];
-allZ = allZ(~isnan(allZ));   % ignore NaNs if present
+allZ = allZ(~isnan(allZ));   % Ignore NaN values if present.
 
 commonCLim = [0, 1];
 
