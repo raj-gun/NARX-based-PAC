@@ -56,8 +56,8 @@ fft_res = Fs/N;
 pos_freq_comp_vec = [fL_grd(:) , fH_grd(:)];
 no_probes = size(pos_freq_comp_vec,1);
 
-% Standardise the analysed signal to the RMS level of a unit-amplitude cosine.
-std_cos = sqrt(0.5); signal = ( (signal-mean(signal)).* ( std_cos/std(signal) ) );
+% Remove the signal mean before filtering and system identification.
+signal = signal - mean(signal);
 
 phi = [0 , 0];
 vrb = 0;
