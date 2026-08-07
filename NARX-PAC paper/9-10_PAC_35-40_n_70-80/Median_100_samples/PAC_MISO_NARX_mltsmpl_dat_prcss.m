@@ -1,10 +1,14 @@
-
+%PAC_MISO_NARX_MLTSMPL_DAT_PRCSS Post-process a saved ensemble of NARX-PAC realisations.
+%   The script expects Comods, Comods_diff, PAC_data_mat,
+%   All_freq_comb_dat, the frequency grids, sampling rate, and n_smpls in
+%   the workspace. It returns per-run post-processed maps and their medians.
+%
 % 
 % file_dir_PP = '\<path-to>\Results\MISO_NARX\SyntheticData\Multisample\';
 % file_name_PP = 'F1_3_5s_wrk.mat';
 % load([file_dir_PP,file_name_PP]);
 
-%%
+%% Post-process individual NARX-PAC realisations
 Comods = cellfun(@(x) x(1), Comods);
 
 Comods_intrmd = cell(1,n_smpls);
@@ -30,7 +34,7 @@ for i = 1:n_smpls
 
 end
 
-%%
+%% Aggregate the ensemble results
 
 Comods_mat          = cat(3, Comods{:});
 Comods_intrmd_mat   = cat(3, Comods_intrmd{:});
@@ -38,12 +42,12 @@ Comods_harm_mat     = cat(3, Comods_harm{:});
 Comods_diff_mat     = cat(3, Comods_diff{:});
 Comods_D_mat        = cat(3, Comods_D{:});
 
-%%
+%% Annotate the expected coupling regions
 
 % file_dir_PP = '\<path-to>\Results\MISO_NARX\SyntheticData\Multisample\PP\';
 % file_name_PP = [ file_name_PP(1:end-4) , '_PP' , '.mat' ];
 % save([file_dir_PP,file_name_PP]);
-%%
+%% Annotate the expected coupling regions
 
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
