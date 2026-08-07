@@ -1,3 +1,8 @@
+%MULTISMPL_NOISE_ROBUST_PLTS_L Assemble the Figure 25 noise-robustness comparison.
+%   Saved median results for the two-band experiment at SNR 2 and SNR 1
+%   are loaded and displayed for NARX-PAC and the conventional methods,
+%   with boxes marking the known coupled frequency bands.
+%
 clear all;clc;close all;
 
 %% Bounding box
@@ -69,8 +74,8 @@ rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
 
-%%
-%%
+%% Load saved experiment results
+%% Load saved experiment results
 %% Load saved data SNR 1
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_1_10s_wrk_PP.mat']);
