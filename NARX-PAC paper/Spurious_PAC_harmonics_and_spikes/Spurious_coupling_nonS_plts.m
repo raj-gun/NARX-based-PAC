@@ -24,8 +24,6 @@ u = sin( (2*pi*LF).*tspan )./LF;
 s_final = 10 ./ ( 1 + exp( -12.*( 0.5.*(1+5.*u) -0.7 ) )  );
 am_lag = 0;
 
-% s_final = van_d_pol_LF(tspan,116.5)';
-% am_lag = 0;
 
 n_smpls = 100; rng(100,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); 
 rng( rng_seeds(60) ); [~, ~, pink, ~] = pink_noise_LF_HF(N, Fs, [9.5,10.5], [55,65]);
@@ -47,12 +45,10 @@ if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
     N = length(tspan);
-    %fftn = 1000;%Fs/N;
     w = 0:Fs/fftn:Fs-(Fs/fftn);
 end
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 %%
 
 OthrMthds_file_name = 'NonSine';

@@ -42,7 +42,6 @@ tm_frq_plt(s_final, Fs, fftn);
 
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 %%
 
 OthrMthds_file_name = 'spike_train';
@@ -85,8 +84,6 @@ scaling(1)=0; scaling(end)=0;
 f = f .* scaling(1:end-1);
 pink_noise = real(ifft(f));
 %-------------------------------------------------------------
-% pink_noise = dsp.ColoredNoise('Color','pink','SamplesPerFrame',N,'NumChannels',1);
-% bg_signal = pink_noise();
 bg_signal = pink_noise;
 sigma = width_samples / (2*sqrt(2*log(2))); % Convert FWHM to standard deviation for Gaussian
 intervals_ms = mean_interval + (rand(1, ceil(N/(Fs*mean_interval/1000))) - 0.5)*2*jitter;

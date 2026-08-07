@@ -48,9 +48,7 @@ rng(100,"twister"); rng_seeds = randi([1,1e5],n_smpls,1);
 save_data = false;
 
 LF_freq_1 = [9,10];
-% HF_freq_1 = [60,75]; HF_freq_2 = [40,50]; HF_freq_3 = [20,30]+10;
 HF_freq_1 = [65,75]+5; HF_freq_2 = [40,45]-5; % Working
-% HF_freq_1 = [65,75]; HF_freq_2 = [40,45]; %Not working
 
 disp(['LF = ', num2str(LF_freq_1), ', HF1 = ', num2str(HF_freq_1), ', HF2 = ', num2str(HF_freq_2)]);
 
@@ -93,9 +91,7 @@ for i = 1:n_smpls
     %=======================
     %Down sample
 
-    %s_final = fft_bndpss_flt( s_final, Fs, 0, dwn_smpl_F/2 );
     s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
-    %s_final = lowpass_fir(s_final, (dwn_smpl_F/2)-2, Fs);
     s_final = s_final(1:dwn_smpl:N);
     tspan   = tspan(1:dwn_smpl:N);
     Fs      = dwn_smpl_F; Ts = 1/Fs;
@@ -110,7 +106,6 @@ for i = 1:n_smpls
     N = length(s_final_trim);
     %----------------------
     fftn = length(s_final_trim);
-    %tm_frq_plt(s_final_trim, Fs, fftn);
     %=======================
 
     %=======================
@@ -148,11 +143,6 @@ for j = 1:n_smpls
 
     disp(j);
 
-    %{
-    figure; imagesc(fL_vals, fH_vals, Comod); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-    rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-    rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-    %}
     %=======================
 end
 
@@ -175,11 +165,6 @@ s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 end
 %-----------------------------------------------------
 
@@ -189,11 +174,6 @@ function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 %%
 end
 

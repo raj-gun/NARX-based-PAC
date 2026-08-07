@@ -67,53 +67,35 @@ commonCLim = [0, 1];
 nexttile;
 imagesc(Comod_NARX_PAC_1_2{1,3}, Comod_NARX_PAC_1_2{1,2}, median(Comod_NARX_PAC_1_2{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel({'\bf{One FO}' ; ' ' ; '\rm{High Frequency (Hz)}'});
 ylabel('High Frequency (Hz)');
-%xlabel('Low Frequency (Hz)');
 title({'Signal length of 2 seconds'});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(Comod_NARX_PAC_1_3{1,3}, Comod_NARX_PAC_1_3{1,2}, median(Comod_NARX_PAC_1_3{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
-%xlabel('Low Frequency (Hz)');
 title({'Signal length of 3 seconds'});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(Comod_NARX_PAC_1_5{1,3}, Comod_NARX_PAC_1_5{1,2}, median(Comod_NARX_PAC_1_5{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
-%xlabel('Low Frequency (Hz)');
 title({'Signal length of 5 seconds'});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(Comod_NARX_PAC_2_2{1,3}, Comod_NARX_PAC_2_2{1,2}, median(Comod_NARX_PAC_2_2{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel({'\bf{Two FOs}' ; ' ' ; '\rm{High Frequency (Hz)}'});
 ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
-%title({'5 sec.';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(Comod_NARX_PAC_2_3{1,3}, Comod_NARX_PAC_2_3{1,2}, median(Comod_NARX_PAC_2_3{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
-%title({'5 sec.';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(Comod_NARX_PAC_2_5{1,3}, Comod_NARX_PAC_2_5{1,2}, median(Comod_NARX_PAC_2_5{1,1},3) ); caxis(commonCLim); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
-%title({'5 sec.';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 

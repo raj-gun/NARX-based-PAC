@@ -16,11 +16,9 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 load('\<path-to>\NARX-PAC paper\LFP\LFP data\LFP_HG_HFO.mat');
 s_final = lfpHG;
 %or
-%s_final = lfpHFO;
 N = length(s_final);
 tspan = 0:Ts:(N*Ts-Ts);
 fftn = 4000;%Fs/N;
-% tm_frq_plt(s_final, Fs, fftn); % Visualise PAC  in time-frequency plots
 %% Down sample
 
 dwn_smpl_F = 500;
@@ -55,7 +53,6 @@ toc
 % file_dir = '/home/gunawardes/Documents/Matlab/CFC/Results/MISO_NARX/Tortlab/';
 % save([file_dir , file_name, '.mat']);
 %%
-%{1
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, Comods{2}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, diff_comod); colorbar; axis xy; set(gca, 'FontSize', 18);
@@ -71,5 +68,4 @@ sgtitle('Commod after removing harmonics');
 [HF_MI_score_1_2, HF_MI_score_final_2, Comod_intrmd] = SpuCup_intrmd_2(fL_vals, fH_vals, Comods{1}, diff_comod, All_freq_comb_1, phs_data_mat, Fs, 0);
 figure; imagesc(fL_vals, fH_vals, Comod_intrmd); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
 sgtitle('Commod after removing SC-i');
-%}
 

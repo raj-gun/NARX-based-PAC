@@ -32,9 +32,6 @@ fL_vals = [2:1:15];
 fH_vals = [20:1:100];
 
 % %Down-sample params
-% dwn_smpl_F = 250;
-% dwn_smpl_T = 1/dwn_smpl_F;
-% dwn_smpl = Fs/dwn_smpl_F;
 
 %% PAC signal params
 
@@ -78,24 +75,15 @@ parfor i = 1:n_smpls
     %=======================
     %Down sample
 
-    %s_final = fft_bndpss_flt( s_final, Fs, 0, dwn_smpl_F/2 );
-    %s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
-    %s_final = lowpass_fir(s_final, (dwn_smpl_F/2)-2, Fs);
-    %s_final = s_final(1:dwn_smpl:N);
-    %tspan = tspan(1:dwn_smpl:N);
-    %Fs = dwn_smpl_F; Ts = 1/Fs;
 
-    %pink = pink(1:dwn_smpl:N);
     %=======================
 
     %=======================
     %Trim the PAC signal to get a small segment
 
     s_final_trim = s_final(trim_ind)';
-    %N = length(s_final_trim);
     %----------------------
     fftn = length(s_final_trim);
-    %tm_frq_plt(s_final_trim, Fs, fftn);
     %=======================
 
     %=======================
@@ -143,21 +131,6 @@ Comods{5,1} = fL_vals;
 Comods{6,1} = fH_vals;
 %%
 
-%{
-figure; tiledlayout(2,2);
-nexttile;
-imagesc(fL_vals, fH_vals, mean(Comods_mat_OzktMI,3)'); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1, (abs(diff(HF_freq_1))*1)+1]; rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-nexttile;
-imagesc(fL_vals, fH_vals, mean(Comods_mat_CanltyMVL,3)'); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1, (abs(diff(HF_freq_1))*1)+1]; rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-nexttile;
-imagesc(fL_vals, fH_vals, mean(Comods_mat_TortMI,3)'); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1, (abs(diff(HF_freq_1))*1)+1]; rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-nexttile;
-imagesc(flow_GLM, fhigh_GLM, mean(Comods_mat_GLM_robust,3)'); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1, (abs(diff(HF_freq_1))*1)+1]; rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-%}
 
 figure; tiledlayout(2,2);
 nexttile;
@@ -188,11 +161,6 @@ s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 end
 %-----------------------------------------------------
 
@@ -202,11 +170,6 @@ function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 %%
 end
 

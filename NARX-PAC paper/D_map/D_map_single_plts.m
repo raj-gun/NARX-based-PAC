@@ -35,7 +35,6 @@ axis tight;
 colorbar;
 xlabel('Low Frequency (Hz)');
 ylabel('High Frequency (Hz)');
-%title('7Hz with 63Hz');
 set(gca, 'FontSize', font_size);
 
 nexttile;
@@ -44,8 +43,6 @@ set(gca, 'YDir', 'normal');
 axis tight;
 colorbar;
 xlabel('Low Frequency (Hz)');
-%ylabel('High Frequency (Hz)');
-%title('6-7Hz with 55-65Hz ');
 set(gca, 'FontSize', font_size);
 
 nexttile;
@@ -54,7 +51,5 @@ set(gca, 'YDir', 'normal');
 axis tight;
 colorbar;
 xlabel('Low Frequency (Hz)');
-%ylabel('High Frequency (Hz)');
-%title('9-10Hz with 35–40Hz and 70–80Hz');
 set(gca, 'FontSize', font_size);
 

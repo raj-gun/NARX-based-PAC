@@ -21,7 +21,6 @@ w = 0:Fs/fftn:Fs-(Fs/fftn);
 
 am_lag = 16;
 %----------
-% s_LF = cos((2*pi*fL).*tspan + (f_phi(1)*pi/180));
 %----------
 LF_freq = [6,7]; HF_freq = [55,60];
 n_smpls = 100; rng(200,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); i = 15;
@@ -35,7 +34,6 @@ m = 0.5; A = 200; C = 1*1e-6; am_lag = 16;
 
 %=======================
 
-% pink_aug = (pink_aug_1 + pink_aug_2)./2;
 disp(['LF = ', num2str(LF_freq), ', HF = ', num2str(HF_freq)]);
 
 
@@ -52,12 +50,10 @@ if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
     N = length(tspan);
-    %fftn = 1000;%Fs/N;
     w = 0:Fs/fftn:Fs-(Fs/fftn);
 end
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 %%
 
 OthrMthds_file_name = 'PAC_OthrMthds_6-7_55-60_SNR_3';
@@ -97,11 +93,6 @@ s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 end
 %-----------------------------------------------------
 
@@ -111,11 +102,6 @@ function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 %%
 end
 
@@ -131,8 +117,6 @@ scaling(1)=0; scaling(end)=0;
 f = f .* scaling;
 pink_noise = real(ifft(f));
 %-------------------------------------------------------------
-% pink_noise = dsp.ColoredNoise('Color','pink','SamplesPerFrame',N,'NumChannels',1);
-% bg_signal = pink_noise();
 bg_signal = pink_noise;
 sigma = width_samples / (2*sqrt(2*log(2))); % Convert FWHM to standard deviation for Gaussian
 intervals_ms = mean_interval + (rand(1, ceil(N/(Fs*mean_interval/1000))) - 0.5)*2*jitter;
@@ -218,18 +202,5 @@ axis([3, 15, 30, 95]);
 colorbar; axis xy; set(gca, 'FontSize', font_size);
 %----------
 %----------
-% nexttile(t2)
-% imagesc( MISO_NARX_plt_dat{1} , MISO_NARX_plt_dat{2} , MISO_NARX_plt_dat{4} );
-% ttl_5 = title({'Penny et. al. 2008';' '}); ttl_5.Position(2)=89;
-% xlabel('Low Frequency (Hz)');
-% %ylh_2 = ylabel('High Frequency (Hz)'); ylh_2.Position(1)=ylh_1.Position(1);
-% axis([3, 15, 30, 95]);
-% colorbar; axis xy; set(gca, 'FontSize', font_size);
 % %----------
-% nexttile(t2)
-% imagesc( MISO_NARX_plt_dat{1} , MISO_NARX_plt_dat{2} , MISO_NARX_plt_dat{5} );
-% xlabel('Low Frequency (Hz)');
-% ttl_4 = title({'NARX-based PAC';' '}); ttl_4.Position(2)=ttl_3.Position(2);
-% axis([3, 15, 30, 95]);
-% colorbar; axis xy; set(gca, 'FontSize', font_size);
 end

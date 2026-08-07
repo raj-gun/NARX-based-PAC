@@ -45,9 +45,7 @@ s_final = pink + s_final;
 %% Down sample
 
 dwn_smpl_F = 250;
-%s_final = fft_bndpss_flt( s_final, Fs, 0, dwn_smpl_F/2 );
 s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
-% s_final = lowpass_fir(s_final, dwn_smpl_F/2, Fs);
 dwn_smpl = Fs/dwn_smpl_F;
 s_final = s_final(1:dwn_smpl:N);
 tspan = tspan(1:dwn_smpl:N);
@@ -55,9 +53,6 @@ Fs = dwn_smpl_F; Ts = 1/Fs;
 
 pink = pink(1:dwn_smpl:N);
 
-% N = length(tspan);
-% fftn = 1000;%Fs/N;
-% w = 0:Fs/fftn:Fs-(Fs/fftn);
 
 %% Test single  sample of noise
 
@@ -71,12 +66,9 @@ figure;plot(tspan(trim_ind),s_final_trim);
 %----------------------
 fftn = length(s_final_trim); 
 w = 0:Fs/fftn:Fs-(Fs/fftn);
-% s_final_trim_fft = Ts.*fft(s_final_trim, fftn);figure;subplot(2,1,1);plot(w, abs(s_final_trim_fft));subplot(2,1,2);plot(w, angle(s_final_trim_fft).*(180/pi));
 tm_frq_plt(s_final_trim, Fs, fftn);
 
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
-% fL_vals = [1:0.5:15]; fH_vals = [18:1:50];
-% fL_vals = [5:0.5:20]; fH_vals = [30:1:100];
 
 
 %% ------------------------ NARX based MISO PAC Comodulogram ------------------------------
@@ -91,7 +83,6 @@ tic
 toc
 %% Post processing of results
 
-% [HF_MI_score_1, HF_MI_score_final] = SpuCup_intrmd(fL_vals, fH_vals, diff_comod);
 
 [Comod_harmonic_rmv, IF_harmonic_test_dat] = IF_harmonic_test(All_freq_comb_1, phs_data_mat, fL_vals, fH_vals, Comods{1}, Ts);
 figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gca, 'FontSize', 18);
@@ -101,11 +92,8 @@ sgtitle('Commod after removing harmonics');
 %%
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 
-% figure; imagesc(fL_vals, fH_vals, diff_comod); colorbar; axis xy; set(gca, 'FontSize', 18);
 
-% figure; surf(fL_grd, fH_grd, Comod, 'EdgeColor','none'); axis tight; view(2); axis tight; shading interp;
 
-% disp(All_freq_comb( All_freq_comb(:, 1)==fL & All_freq_comb(:, 2)==fH , :))
 %%
 %%
 
@@ -124,8 +112,6 @@ scaling(1)=0; scaling(end)=0;
 f = f .* scaling(1:end-1);
 pink_noise = real(ifft(f));
 %-------------------------------------------------------------
-% pink_noise = dsp.ColoredNoise('Color','pink','SamplesPerFrame',N,'NumChannels',1);
-% bg_signal = pink_noise();
 bg_signal = pink_noise;
 sigma = width_samples / (2*sqrt(2*log(2))); % Convert FWHM to standard deviation for Gaussian
 intervals_ms = mean_interval + (rand(1, ceil(N/(Fs*mean_interval/1000))) - 0.5)*2*jitter;

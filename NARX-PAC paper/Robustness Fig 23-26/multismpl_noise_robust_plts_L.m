@@ -27,32 +27,25 @@ rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 ylabel('High Frequency (Hz)');
 title({'Ozkurt et. al. 2011';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_mat_CanltyMVL,3)'); caxis([0,0.04]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 title({'Canolty et. al. 2010';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_mat_TortMI,3)'); caxis([0,0.025]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 title({'Tort et. al. 2008';' '});
-%xlabel('Low Frequency (Hz)');
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(flow_GLM, fhigh_GLM, median(Comods_mat_GLM_robust,3)'); caxis([0,3e-3]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
-%ylabel('High Frequency (Hz)');
 title({'Penny et. al. 2008';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comod_NARX_PAC,3)); caxis([0,1]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
@@ -61,25 +54,20 @@ rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_PP_intrmd,3)); caxis([0,1]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC PP';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comod_D_NARX_PAC,3)); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 
 %%
 %%
@@ -107,32 +95,25 @@ rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 ylabel('High Frequency (Hz)');
 title({'Ozkurt et. al. 2011';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_mat_CanltyMVL,3)'); caxis([0,0.04]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 title({'Canolty et. al. 2010';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_mat_TortMI,3)'); caxis([0,0.025]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 title({'Tort et. al. 2008';' '});
-%xlabel('Low Frequency (Hz)');
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(flow_GLM, fhigh_GLM, median(Comods_mat_GLM_robust,3)'); caxis([0,3e-3]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
-%ylabel('High Frequency (Hz)');
 title({'Penny et. al. 2008';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comod_NARX_PAC,3)); caxis([0,1]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
@@ -141,22 +122,17 @@ rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comods_PP_intrmd,3)); caxis([0,1]); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC PP';' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );
 %
 nexttile;
 imagesc(fL_vals, fH_vals, median(Comod_D_NARX_PAC,3)); colorbar; axis xy; set(gca, 'FontSize', font_size); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% ylabel('High Frequency (Hz)');
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
-% set(gca,'Units','normalized'); titleHandle = get( gca ,'Title' ); pos  = get( titleHandle , 'position' ); pos1 = [pos(1) pos(2)-7 pos(3)]; set( titleHandle , 'position' , pos1 );

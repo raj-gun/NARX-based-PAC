@@ -25,7 +25,6 @@ w = 0:Fs/fftn:Fs-(Fs/fftn);
 
 am_lag = 16;
 %----------
-% s_LF = cos((2*pi*fL).*tspan + (f_phi(1)*pi/180));
 %----------
 LF_freq_1 = [6,7]; HF_freq_1 = [55,60];
 n_smpls = 100; rng(200,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); i = 78;
@@ -38,18 +37,13 @@ m = 0.5; A = 200; C = 1*1e-6;
 [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, A, C, m, am_lag);
 
 % % Simple PAC
-% m = 0.25; A = 50; 
-% [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, A, m, am_lag);
 
-% s_final = s_LF + s_HF1_shft;
 %=======================
 
-% pink_aug = (pink_aug_1 + pink_aug_2)./2;
 disp(['LF = ', num2str(LF_freq_1), ', HF = ', num2str(HF_freq_1)]);
 
 
 %%
-% tm_frq_plt(s_final, Fs, fftn);
 %% Visualise PAC signal
 if am_lag~=0
     s_final = s_final(am_lag:end);
@@ -60,24 +54,10 @@ if am_lag~=0
 end
 s_final_org = s_final;
 s_final_org_fft = Ts.*fft(s_final_org, fftn);
-% figure;subplot(2,1,1);plot(w, abs(s_final_org_fft));subplot(2,1,2);plot(w, angle(s_final_org_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 %% Down sample
 
-% dwn_smpl_F = 250;
-% %s_final = fft_bndpss_flt( s_final, Fs, 0, dwn_smpl_F/2 );
-% s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
-% % s_final = lowpass_fir(s_final, (dwn_smpl_F/2)-2, Fs);
-% dwn_smpl = Fs/dwn_smpl_F;
-% s_final = s_final(1:dwn_smpl:N);
-% tspan = tspan(1:dwn_smpl:N);
-% Fs = dwn_smpl_F; Ts = 1/Fs;
 % 
-% pink = pink(1:dwn_smpl:N);
 
-% N = length(tspan);
-% fftn = 1000;%Fs/N;
-% w = 0:Fs/fftn:Fs-(Fs/fftn);
 
 %% Test single  sample of noise
 
@@ -87,7 +67,6 @@ trim_ind = (tm_itr*tm_windw/Ts)+1:((tm_itr+1)*tm_windw)/Ts;%(1 + (30/fL)/Ts);%
 s_final_trim = s_final(trim_ind)';%(600:1100)';
 
 N = length(s_final_trim);
-% figure;plot(tspan(trim_ind),s_final_trim);
 %----------------------
 fftn = length(s_final_trim); 
 w = 0:Fs/fftn:Fs-(Fs/fftn);
@@ -96,46 +75,35 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 pink = pink(trim_ind)';
 s_final_trim = ( 3*( std(pink)/std(s_final_trim) ) ) .* s_final_trim;
 sn_ratio = snr(s_final_trim,pink); disp(['SNR = ', num2str(sn_ratio), 'dB or ',  num2str(db2mag(sn_ratio))]);
-%{1
 s_final_trim = pink + s_final_trim;
 tm_frq_plt(s_final_trim, Fs, fftn);
-%}
 %%
 
 fL_vals = [2:1:15]; fH_vals = [20:1:100];
 
-% fL_vals = [6:1:13]; fH_vals = [20:1:100];
 
-% fL_vals = [3:1:10]; fH_vals = [HF_freq_1(1)-10:1:HF_freq_1(2)+10];
 
 
 %% Evaluate PAC
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==6,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
-% phs_freq = phs_freq./max(phs_freq')';
 figure;imagesc(phs_bins, fhigh_MI, phs_freq ); axis xy;
 
 figure
 imagesc(flow_MI, fhigh_MI, OzktMI');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Amplitude Frequency (Hz)');
-% title('Canolty Modulation index')
 
 figure
 imagesc(flow_MI, fhigh_MI, CanltyMI');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Amplitude Frequency (Hz)');
-% title('Direct estimator')
 
 figure
 imagesc(flow_MI, fhigh_MI, TortMI');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Amplitude Frequency (Hz)');
-% title('Direct estimator')
 
 [GLM_org, GLM_2, GLM_robust, flow_GLM, fhigh_GLM] = general_linear_index_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5);
 
@@ -143,21 +111,18 @@ figure
 imagesc(flow_GLM, fhigh_GLM, GLM_org');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Envelope Frequency (Hz)');
 
 
 figure;
 imagesc(flow_GLM, fhigh_GLM, GLM_2');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Envelope Frequency (Hz)');
 
 
 figure
 imagesc(flow_GLM, fhigh_GLM, GLM_robust');  colorbar;
 axis xy
 set(gca, 'FontSize', 18);
-% xlabel('Phase Frequency (Hz)');  ylabel('Envelope Frequency (Hz)');
 
 plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} , ...
               {GLM_org, GLM_2, GLM_robust, flow_GLM, fhigh_GLM} };
@@ -179,11 +144,6 @@ s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 end
 %-----------------------------------------------------
 
@@ -193,11 +153,6 @@ function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 %%
 end
 

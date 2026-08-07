@@ -47,12 +47,10 @@ if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
     N = length(tspan);
-    %fftn = 1000;%Fs/N;
     w = 0:Fs/fftn:Fs-(Fs/fftn);
 end
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 
 %%
 
@@ -98,7 +96,6 @@ HF_env_mod = abs(hilbert(s_HF1_shft));
 nbins = 100;
 [bin_centers, amp_means] = pac_hist(nbins , LF_phs_mod , HF_env_mod , true);
 
-%figure;plot(LF_phs_mod.*(180/pi) , HF_env_mod, '.');
 %----------------------------------------
 
 str = '#ff0000b2'; color_lf = [sscanf(str(2:end),'%2x%2x%2x',[1 3])/255 , 0.7]; % low frequency signal color
@@ -127,8 +124,6 @@ bin_centers = (edges(1:end-1) + edges(2:end)) / 2;
 if plt
     figure;
     bar(rad2deg(bin_centers), amp_means, 'FaceColor', [0.2 0.6 0.8], 'EdgeAlpha', 0);
-    % xlabel('Phase of low frequency (rads)');
-    % ylabel('Amplitude of high frequency');
     set(gca,"TickLabelInterpreter",'latex'); set(gca, 'XTick', [-180 -90 0 90 180]); set(gca, 'XTickLabel', {'$-\pi$', '$-\pi/2$', '0', '$\pi/2$', '$\pi$'});
     set(gca,'YTick',[]);
     set(gca, 'FontSize', 20);
@@ -143,11 +138,6 @@ s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 end
 %-----------------------------------------------------
 
@@ -157,11 +147,6 @@ function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-% s_final = s_final(delay_ind:3000+delay_ind-1); s_HF1_shft = s_HF1_shft(delay_ind:3000+delay_ind-1);
-% figure;
-% ax1=subplot(3,1,1);plot(s_HF1);hold on; plot(s_LF);
-% ax2=subplot(3,1,2);plot(s_HF1_shft);hold on; plot(s_LF);
-% ax3=subplot(3,1,3);plot(s_final); linkaxes([ax1,ax2,ax3],'x');
 %%
 end
 
@@ -177,8 +162,6 @@ scaling(1)=0; scaling(end)=0;
 f = f .* scaling;
 pink_noise = real(ifft(f));
 %-------------------------------------------------------------
-% pink_noise = dsp.ColoredNoise('Color','pink','SamplesPerFrame',N,'NumChannels',1);
-% bg_signal = pink_noise();
 bg_signal = pink_noise;
 sigma = width_samples / (2*sqrt(2*log(2))); % Convert FWHM to standard deviation for Gaussian
 intervals_ms = mean_interval + (rand(1, ceil(N/(Fs*mean_interval/1000))) - 0.5)*2*jitter;

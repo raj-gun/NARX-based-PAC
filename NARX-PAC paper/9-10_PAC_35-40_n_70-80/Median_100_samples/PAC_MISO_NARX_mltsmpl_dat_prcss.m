@@ -1,7 +1,4 @@
-% close all; 
-% clear all;clc;
 
-% addpath('\<path-to>\NARX_PAC\');
 % 
 % file_dir_PP = '\<path-to>\Results\MISO_NARX\SyntheticData\Multisample\';
 % file_name_PP = 'F1_3_5s_wrk.mat';
@@ -48,94 +45,47 @@ Comods_D_mat        = cat(3, Comods_D{:});
 % save([file_dir_PP,file_name_PP]);
 %%
 
-%{1
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 rect_pos_1 = rect_pos_box(LF_freq_1, HF_freq_1, fL_diff, fH_diff);
-% rect_pos_2 = rect_pos_box(LF_freq_1, HF_freq_2, fL_diff, fH_diff);
 
 %====================================
 figure;
 subplot(2,2,1); imagesc(fL_vals, fH_vals, mean(Comods_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 title('Commod');
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 
 subplot(2,2,2); imagesc(fL_vals, fH_vals, mean(Comods_intrmd_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 title('Commod SC-i rmvd');
 
 subplot(2,2,3); imagesc(fL_vals, fH_vals, mean(Comods_harm_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 
 subplot(2,2,4); imagesc(fL_vals, fH_vals, mean(Comods_D_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 %====================================
 figure;
 subplot(2,2,1); imagesc(fL_vals, fH_vals, median(Comods_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 title('Commod');
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 
 subplot(2,2,2); imagesc(fL_vals, fH_vals, median(Comods_intrmd_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 title('Commod SC-i rmvd');
 
 subplot(2,2,3); imagesc(fL_vals, fH_vals, median(Comods_harm_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 
 subplot(2,2,4); imagesc(fL_vals, fH_vals, median(Comods_D_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 
 % %====================================
-% figure;
-% subplot(2,2,1); imagesc(fL_vals, fH_vals, prctile(Comods_mat, 5 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% title('Commod');
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % 
-% subplot(2,2,2); imagesc(fL_vals, fH_vals, prctile(Comods_intrmd_mat, 5 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% title('Commod SC-i rmvd');
 % 
-% subplot(2,2,3); imagesc(fL_vals, fH_vals, prctile(Comods_harm_mat, 5 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % 
-% subplot(2,2,4); imagesc(fL_vals, fH_vals, prctile(Comods_D_mat, 5 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % %====================================
-% figure;
-% subplot(2,2,1); imagesc(fL_vals, fH_vals, prctile(Comods_mat, 95 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% title('Commod');
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % 
-% subplot(2,2,2); imagesc(fL_vals, fH_vals, prctile(Comods_intrmd_mat, 95 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-% title('Commod SC-i rmvd');
 % 
-% subplot(2,2,3); imagesc(fL_vals, fH_vals, prctile(Comods_harm_mat, 95 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % 
-% subplot(2,2,4); imagesc(fL_vals, fH_vals, prctile(Comods_D_mat, 95 ,3)); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% % rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 % %====================================
-
-% figure; imagesc(fL_vals, fH_vals, mean(Comods_diff_mat,3)); colorbar; axis xy; set(gca, 'FontSize', 18);
-% rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
-% sgtitle('Commod_diff');
-
-% figure; surf(fL_grd, fH_grd, median(Comods_mat,3), 'EdgeColor','none'); axis tight; view(2); axis tight; shading interp;
-%}

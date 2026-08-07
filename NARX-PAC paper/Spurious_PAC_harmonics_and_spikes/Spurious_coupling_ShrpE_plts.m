@@ -39,7 +39,6 @@ tm_frq_plt(s_final, Fs, fftn);
 
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-% figure;plot(w, abs(s_final_org_fft));
 %%
 
 OthrMthds_file_name = 'Sharp_Edge';
