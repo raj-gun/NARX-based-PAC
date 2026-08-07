@@ -13,6 +13,15 @@ The following PAC measures are included:
 
 These methods are used for the comparisons presented in the paper and supplementary figures.
 
+## Original Source Code
+
+The implementations in this folder were adapted from:
+
+- MATLAB code accompanying Özkurt and Schnitzler [3], which was adapted from code written for Kramer et al. [6].
+- The [TortLab phase-amplitude-coupling repository](https://github.com/tortlab/phase-amplitude-coupling), containing MATLAB routines for computing the Modulation Index and comodulograms described by Tort et al. [1].
+
+For the comparisons used in the NARX-based PAC study, the filtering bandwidths were made adaptive following Berman et al. [5].
+
 ## Files
 
 | File | Description | Source / adaptation |
@@ -26,15 +35,6 @@ These methods are used for the comparisons presented in the paper and supplement
 | `eegfilt.m` | FIR filtering routine used by the filtering-based PAC methods. | Supporting filtering routine by Scott Makeig and Arnaud Delorme. |
 | `simulate_and_compare.m` | Original example script for evaluating and comparing the filtering-based PAC measures on simulated data. | Supplied with the Özkurt source code [3]. |
 | `simulate_and_compare_edit.m` | Edited version of the original simulation and comparison script. | Modified from `simulate_and_compare.m`. |
-
-## Original Source Code
-
-The implementations in this folder were adapted from:
-
-- MATLAB code accompanying Özkurt and Schnitzler [3], which was adapted from code written for Kramer et al. [6].
-- The [TortLab phase-amplitude-coupling repository](https://github.com/tortlab/phase-amplitude-coupling), containing MATLAB routines for computing the Modulation Index and comodulograms described by Tort et al. [1].
-
-For the comparisons used in the NARX-based PAC study, the filtering bandwidths were made adaptive following Berman et al. [5].
 
 ## References
 
