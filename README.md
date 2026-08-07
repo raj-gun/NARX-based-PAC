@@ -1,5 +1,5 @@
 # NARX-PAC: A Dynamical Systems and System Identification Framework for Phase-Amplitude Coupling Analysis  
-*An open-source MATLAB implementation for detecting and characterising phase-amplitude coupling using nonlinear system identification and NARX models.*
+*An open-source MATLAB implementation for detecting and characterising phase-amplitude coupling using nonlinear system identification and polynomial NARX models.*
 
 Authors: [Rajintha Gunawardena](https://www.researchgate.net/profile/Shenal-Gunawardena?ev=hdr_xprf)<sup>1</sup>, [Fei He](https://github.com/feihelab)<sup>1</sup>  
 1. Centre for Computational Science and Mathematical Modelling, Coventry University, Coventry CV1 5FB, UK.
