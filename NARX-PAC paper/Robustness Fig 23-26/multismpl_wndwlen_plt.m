@@ -1,3 +1,8 @@
+%MULTISMPL_WNDWLEN_PLT Assemble the Figure 26 short-window robustness comparison.
+%   Saved NARX-PAC median maps for 2, 3, 5, and 10 s windows are loaded for
+%   the one-band and two-band experiments. The script plots the
+%   intermodulation-screened maps with the true coupling bands marked.
+%
 clear all;clc;close all;
 
 %% Load saved data
