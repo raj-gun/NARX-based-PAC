@@ -1,8 +1,13 @@
+%SPURIOUS_COUPLING_SHRPE_PLTS Assemble the Figure 21 sharp-edge signal and method-comparison panels.
+%   The script regenerates the noisy sharp-edged waveform, loads saved
+%   NARX-PAC and conventional-method outputs, and formats the signal,
+%   spectrum, and comodulograms for publication.
+%
 clear;clc;close all;
 addpath('\<path-to>\NARX_PAC\Utils\');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -12,7 +17,7 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% PAC LF-sine HF-sine simple model
 %% =====================================================
 
-%%
+%% Configure the analysis interval
 tspan = 0:Ts:25-Ts;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 10000;%Fs/N;
@@ -34,12 +39,12 @@ s_final = pink + s_final;
 
 N = length(s_final);
 
-%%
+%% Visualise the current results
 tm_frq_plt(s_final, Fs, fftn);
 
 s_final_fft = Ts.*fft(s_final, fftn);
 figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_final_fft).*(180/pi));
-%%
+%% Load saved method-comparison results
 
 OthrMthds_file_name = 'Sharp_Edge';
 OthrMthds_file_dir = '\<path-to>\NARX-PAC paper\Spurious_PAC_harmonics_and_spikes\Data_Other_Methods\';
@@ -74,6 +79,10 @@ Mthds_plt(OthrMthds_plt_data,MISO_NARX_plt_dat,font_size,t3, 2, [1,2], [1, 15, 1
 % Code is adapted from Kramer et al. (2008), Jrn. Nrsc. Methds. 
 % and Ozkurt et al., (2011) Jrn. Nrsc. Methds.
 function [s] = sharp_edge(f, edge_pos, Ts, N)
+%SHARP_EDGE Generate a periodic waveform with an abrupt edge.
+%   F is the base frequency, EDGE_POS locates the cut within each period, TS
+%   is the sampling interval, and N is the requested sample count. S is the
+%   truncated-cosine waveform used to test harmonic-related spurious PAC.
 
 T = 1/f;
 cut_point = round(edge_pos*T/Ts);
@@ -98,6 +107,10 @@ end
 
 %% Plotting
 function plots(w, s_final_fft, tspan, s_final, font_size, tile_tag, tile_no, tile_spn)
+%PLOTS Draw the publication time-trace and magnitude-spectrum panel.
+%   W and S_FINAL_FFT provide the frequency axis and spectrum; TSPAN and
+%   S_FINAL provide the time-domain data. FONT_SIZE and the TILE_* arguments
+%   control placement in the parent tiled layout. This helper returns no data.
 %---------------
 box_top = max(abs(s_final_fft))*1.0;
 %---------------
@@ -125,6 +138,11 @@ set(ax4,'YTick',[]); set(ax4, 'FontSize', font_size); box(ax4,'off');
 end
 
 function Mthds_plt(OthrMthds_plt_data,MISO_NARX_plt_dat,font_size,tile_tag, tile_no, tile_spn, axis_lim, tt_pos, ylab_pos)
+%MTHDS_PLT Draw conventional and NARX-PAC comodulogram panels.
+%   OTHRMTHDS_PLT_DATA and MISO_NARX_PLT_DAT contain saved method outputs;
+%   FONT_SIZE and TILE_* control the tiled layout. Any remaining arguments
+%   set scenario-specific axis limits and label positions. This helper
+%   produces plots and returns no data.
 flow_MI = OthrMthds_plt_data.plot_data{1,1}{1,5};
 fhigh_MI = OthrMthds_plt_data.plot_data{1,1}{1,6};
 t2 = tiledlayout(tile_tag,2,2, 'TileSpacing','loose', 'Padding', 'loose');
