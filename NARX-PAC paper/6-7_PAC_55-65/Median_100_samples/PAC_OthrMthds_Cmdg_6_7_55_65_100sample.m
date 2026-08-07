@@ -6,7 +6,7 @@
 clear;clc;close all;
 
 addpath('\<path-to>\NARX_PAC\Utils\');
-addpath('\<path-to>\Methods\Matlab_Code');
+addpath('\<path-to>\Other_Methods\');
 %% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
