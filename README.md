@@ -14,7 +14,7 @@ Authors: [Rajintha Gunawardena](https://www.researchgate.net/profile/Shenal-Guna
 
 Unlike methods based only on filtered phase and amplitude-envelope variations, NARX-PAC identifies a generative coupling model. Noise-free simulations of the identified model are then used to estimate modulation strength, preferred phase, and PAC type. The framework also includes procedures for rejecting harmonic-related spurious PAC and a discriminator $\mathcal{D}$ map for distinguishing genuine PAC from intermodulation-related spurious PAC.
 
-In the experiments reported in the accompanying paper, the method produced sharper and more frequency-specific coupling localisation than the benchmark filtering-based methods. It remained robust at a signal-to-noise ratio (SNR) of 2, reasonably robust at an SNR of 1, and performed well with analysis windows as short as 5 seconds.
+In the experiments reported in the accompanying paper, the method produced sharper and more frequency-specific coupling localisation than the benchmark filtering-based methods. It remained robust at a signal-to-noise ratio (SNR) of 2, reasonably robust at an SNR of 1, and performed well with analysis windows as short as 3-5 seconds.
 
 ### Features  
 - **Canonical NARX approximation**: Identifies the minimal dynamical structure associated with PAC using a second-order input-only polynomial NARX model.  
@@ -76,11 +76,11 @@ xlabel('Low frequency (Hz)');
 ylabel('High frequency (Hz)');
 ```
 
-`Comods{1}` contains the thresholded NARX-PAC modulation-index map, `Comods{2}` contains the raw candidate map, and `D_map` contains the discriminator $\mathcal{D}$ map. The example scripts show how to apply [`IF_harmonic_test`](NARX_PAC/IF_harmonic_test.m) and [`SpuCup_intrmd_2`](NARX_PAC/SpuCup_intrmd_2.m) for post-processing.
+`Comods{1}` contains the thresholded NARX-PAC comodulogram, `Comods{2}` contains the raw comodulogram, and `D_map` contains the discriminator $\mathcal{D}$ map. The example scripts show how to apply [`IF_harmonic_test`](NARX_PAC/IF_harmonic_test.m) and [`SpuCup_intrmd_2`](NARX_PAC/SpuCup_intrmd_2.m) for post-processing.
 
 ### Repository structure
 - [`NARX_PAC`](NARX_PAC/) contains the principal NARX-PAC functions and utilities.  
-- [`NonSysID-i`](NonSysID-i/) contains the standalone input-only system-identification routines used to identify the canonical NARX models.  
+- [`NonSysID-i`](NonSysID-i/) contains the standalone input-only system-identification routines used to identify a NARX model which estimates the canonical approximation of a phase-amplitude coupling.  
 - [`NARX-PAC paper`](NARX-PAC%20paper/) contains the experiment scripts, saved data, and plotting files associated with the paper.
 
 ### Examples
