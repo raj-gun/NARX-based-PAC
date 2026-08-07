@@ -4,7 +4,7 @@
 %   and formats the time trace, spectrum, and comodulograms for publication.
 %
 clear;clc;close all;
-addpath('\<path-to>\NARX_PAC\Utils');
+addpath('\<path-to>\NARX_PAC\Utils\');
 %% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 %% Define numerical helper functions

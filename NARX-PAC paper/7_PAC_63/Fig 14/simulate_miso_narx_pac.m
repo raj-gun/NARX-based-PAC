@@ -18,7 +18,7 @@
 clear all;clc;close all;
 addpath('\<path-to>\NonSysID-i\');
 addpath('\<path-to>\NARX_PAC\');
-addpath('\<path-to>\NARX_PAC\Utils');
+addpath('\<path-to>\NARX_PAC\Utils\');
 %% Load a saved NARX-PAC experiment and inspect its comodulogram
 file_dir = '\<path-to>\NARX-PAC paper\7_PAC_63\Fig 13\';
 file_name = '7-63_pinknoise';
