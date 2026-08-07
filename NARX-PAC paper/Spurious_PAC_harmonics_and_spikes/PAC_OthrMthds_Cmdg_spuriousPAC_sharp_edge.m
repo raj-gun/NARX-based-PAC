@@ -5,8 +5,8 @@
 %
 clear all;clc;close all;
 
-addpath('/home/gunawardes/Documents/Matlab/CFC/NARX_PAC/Utils/');
-addpath('/home/gunawardes/Documents/Matlab/CFC/Methods/Matlab_Code/');
+addpath('\<path-to>\NARX_PAC\Utils\');
+addpath('\<path-to>\Methods\Matlab_Code');
 %% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
