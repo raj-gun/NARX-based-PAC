@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_SPIKE Evaluate a periodic Gaussian spike train with conventional PAC methods.
-%   This script supplies the Ozkurt, Canolty, Tort, and generalized-linear-
-%   model results used in Figure 22 for comparison with the diagnostic
-%   structure resolved by NARX-PAC.
+%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_SPIKE Analyse a periodic Gaussian spike train using conventional PAC methods.
+%   The script calculates the Ozkurt, Canolty, Tort, and GLM results used in
+%   Figure 22 for comparison with the spike-related pattern resolved more
+%   clearly by the NARX-PAC comodulogram.
 %
 clear all;clc;close all;
 
@@ -17,7 +17,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% Spurious PAC
+%% Configure the spurious-PAC test signal
 %% =====================================================
 
 %% Configure the analysis interval
@@ -26,7 +26,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Gaussian-shaped Spike train
+%% Generate the Gaussian spike train
 
 LF = 5;
 amplitude = 3;            % In units of std dev of background
@@ -46,12 +46,12 @@ s_final = 1.19.*s_final;
 sn_ratio = snr(s_final,pink); disp(['SNR = ', num2str(sn_ratio)]);
 s_final = pink + s_final;
 
-%% Down sample
+%% Downsample the signal
 
 % 
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 20; tm_itr = 0;
@@ -68,7 +68,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
 
 
-%% Evaluate PAC
+%% Compute conventional PAC comodulograms
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==6,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
@@ -121,15 +121,15 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 
 %% =====================================================
 %% Local functions
-%% =====================================================S
+%% =====================================================
 
 %% Spike train
 function [spike_train] = spike_signal(mean_interval,N,jitter,amplitude,width_samples,Fs)
 %SPIKE_SIGNAL Generate a jittered Gaussian spike train on pink noise.
 %   MEAN_INTERVAL and JITTER are in milliseconds, N is the sample count,
 %   AMPLITUDE sets the spike height, WIDTH_SAMPLES is the Gaussian full width
-%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN is the resulting
-%   noisy periodic-transient signal.
+%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN contains the
+%   pink-noise background and Gaussian spikes.
 %----------------- Generate pink noise -----------------------
 white = randn(1, N);
 f = fft(white);
