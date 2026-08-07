@@ -1,14 +1,14 @@
-%MULTISMPL_NOISE_ROBUST_PLTS_L Assemble the Figure 25 noise-robustness comparison.
-%   Saved median results for the two-band experiment at SNR 2 and SNR 1
-%   are loaded and displayed for NARX-PAC and the conventional methods,
-%   with boxes marking the known coupled frequency bands.
+%MULTISMPL_NOISE_ROBUST_PLTS_L Create the noise-robustness comparison in Figure 25.
+%   The script loads saved median results for the two-band experiment at SNR 2
+%   and SNR 1, compares NARX-PAC with the conventional methods, and marks the
+%   known coupled frequency bands.
 %
 clear all;clc;close all;
 
-%% Bounding box
+%% Define coupling-region annotations
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 
-%% Load saved data SNR 2
+%% Load the SNR 2 results
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_2_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
@@ -18,7 +18,7 @@ Comods_PP_intrmd = Comods_intrmd_mat;
 Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_9-10__35-40__70-80_SNR_2.mat']);
 
-%% Plots
+%% Plot the SNR 2 comparison
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_1 = rect_pos_box(LF_freq_1, HF_freq_1, fL_diff, fH_diff);
 rect_pos_2 = rect_pos_box(LF_freq_1, HF_freq_2, fL_diff, fH_diff);
@@ -74,9 +74,7 @@ rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
 
-%% Load saved experiment results
-%% Load saved experiment results
-%% Load saved data SNR 1
+%% Load the SNR 1 results
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_1_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
@@ -86,7 +84,7 @@ Comods_PP_intrmd = Comods_intrmd_mat;
 Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_9-10__35-40__70-80_SNR_1.mat']);
 
-%% Plots
+%% Plot the SNR 1 comparison
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_1 = rect_pos_box(LF_freq_1, HF_freq_1, fL_diff, fH_diff);
 rect_pos_2 = rect_pos_box(LF_freq_1, HF_freq_2, fL_diff, fH_diff);
