@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_SHARP_EDGE Evaluate a sharp-edged waveform with conventional PAC methods.
-%   This script supplies the Ozkurt, Canolty, Tort, and generalized-linear-
-%   model results used in Figure 21 to compare harmonic-related false
-%   detections with the NARX-PAC post-processed result.
+%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_SHARP_EDGE Analyse a sharp-edged waveform using conventional PAC methods.
+%   The script calculates the Ozkurt, Canolty, Tort, and GLM results used in
+%   Figure 21 to compare harmonic-related false detections with the
+%   post-processed NARX-PAC result.
 %
 clear all;clc;close all;
 
@@ -17,7 +17,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% Spurious PAC
+%% Configure the spurious-PAC test signal
 %% =====================================================
 
 %% Configure the analysis interval
@@ -26,19 +26,19 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Sharp edge
+%% Generate the sharp-edged waveform
 LF = 9;
 s_final = sharp_edge(LF, 0.2, Ts, N);
 
 n_smpls = 100; rng(100,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); 
 rng( rng_seeds(60) ); [~, ~, pink, ~] = pink_noise_LF_HF(N, Fs, [9.5,10.5], [55,65]);
 
-%% Down sample
+%% Downsample the signal
 
 % 
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 20; tm_itr = 0;
@@ -62,7 +62,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
 
 
-%% Evaluate PAC
+%% Compute conventional PAC comodulograms
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==6,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
@@ -117,14 +117,14 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 %% Local functions
 %% =====================================================
 
-%% Sharp edges
-% Code is adapted from Kramer et al. (2008), Jrn. Nrsc. Methds. 
-% and Ozkurt et al., (2011) Jrn. Nrsc. Methds.
+%% Sharp-edged waveform
+% Code adapted from Kramer et al. (2008) and Ozkurt et al. (2011),
+% Journal of Neuroscience Methods.
 function [s] = sharp_edge(f, edge_pos, Ts, N)
 %SHARP_EDGE Generate a periodic waveform with an abrupt edge.
-%   F is the base frequency, EDGE_POS locates the cut within each period, TS
-%   is the sampling interval, and N is the requested sample count. S is the
-%   truncated-cosine waveform used to test harmonic-related spurious PAC.
+%   F is the base frequency, EDGE_POS specifies the cut position within each
+%   period, TS is the sampling interval, and N is the requested sample count.
+%   S is the resulting sharp-edged waveform.
 
 T = 1/f;
 cut_point = round(edge_pos*T/Ts);
