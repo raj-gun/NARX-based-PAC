@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_6_7_55_65_100SAMPLE Generate the conventional-method ensemble used for the Figure 23 comparison.
-%   The same 100 pink-noise PAC realisations are evaluated with the Ozkurt,
-%   Canolty, Tort, and generalized-linear-model metrics. Results are retained
-%   in workspace arrays for later median-comodulogram plotting.
+%PAC_OTHRMTHDS_CMDG_6_7_55_65_100SAMPLE Generate conventional PAC results for the repeatability comparison in Figure 23.
+%   The same 100 pink-noise PAC realisations are analysed using the Ozkurt,
+%   Canolty, Tort, and general linear model (GLM) measures. The resulting
+%   arrays remain in the workspace for subsequent median-comodulogram plots.
 %
 clear;clc;close all;
 
@@ -17,7 +17,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% PAC LF-sine HF-sine simple model
+%% Configure the synthetic PAC experiment
 %% =====================================================
 
 %% Configure the analysis interval
@@ -26,7 +26,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Sys ID params
+%% Set system-identification parameters
 
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 1;
@@ -36,25 +36,25 @@ disp(['frq_bndw_LF = ', num2str(frq_bndw_LF), ', frq_bndw_HF = ', num2str(frq_bn
 fL_vals = [2:1:15];
 fH_vals = [20:1:100];
 
-% %Down-sample params
+% % Downsampling parameters
 
-%% PAC signal params
+%% Set PAC signal parameters
 
 SNR = 3;
 n_smpls = 100;
 rng(200,"twister"); rng_seeds = randi([1,1e5],n_smpls,1);
 
-% PAC model params
+% PAC model parameters
 LF_freq_1 = [6,7]; HF_freq_1 = [55,60];
 disp(['LF = ', num2str(LF_freq_1), ', HF1 = ', num2str(HF_freq_1)]);
 m = 0.5; A = 200; C = 1*1e-6; am_lag = 16;
 
-% PAC signal trimming params
+% PAC signal trimming parameters
 tm_windw = 10; tm_itr = 0;
 trim_ind = (tm_itr*tm_windw/Ts)+1:((tm_itr+1)*tm_windw)/Ts;%(1 + (30/fL)/Ts);%
 len_trim_ind = length(trim_ind);
 
-%%% PAC
+%% Generate ensemble PAC signals
 s_final_mat = zeros(len_trim_ind, n_smpls);
 
 parfor i = 1:n_smpls
@@ -100,11 +100,9 @@ parfor i = 1:n_smpls
     %=======================
 
     s_final_mat(:,i) = s_final_trim;
-    %% Complete the ensemble loop
-
 end
 
-%% ------------------------ Filtering-based PAC Comodulogram ------------------------------
+%% Compute conventional PAC comodulograms
 
 h = waitbar(0, ['Dataset ',0,'/',num2str(n_smpls)]);
 Comods = cell(7,n_smpls);
@@ -134,7 +132,7 @@ Comods_mat_GLM_robust = cat(3, Comods{8,:});
 
 Comods{5,1} = fL_vals;
 Comods{6,1} = fH_vals;
-%% Visualise the current results
+%% Plot the ensemble conventional-method comodulograms
 
 
 figure; tiledlayout(2,2);
@@ -156,9 +154,9 @@ rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1,
 
 
 
-%% Local functions - PAC general
+%% Local PAC signal-generation functions
 
-% Equation adapted from Jiang et al., (2015) NeuroImage
+% Equation adapted from Jiang et al. (2015), NeuroImage.
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
 %PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
 %   S_LF and S_HF are the slow and fast components; A and C control the
@@ -172,7 +170,7 @@ s_final = s_LF + s_HF1_shft;
 end
 %-----------------------------------------------------
 
-% Simplest form of PAC generaltion in electronics
+% Basic linear amplitude-modulation model of PAC.
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 %PAC_SIMPLE Generate PAC using linear amplitude modulation.
