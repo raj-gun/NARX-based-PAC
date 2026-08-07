@@ -1,11 +1,16 @@
+%PAC_OTHRMTHDS_CMDG_6_7_55_65_100SAMPLE Generate the conventional-method ensemble used for the Figure 23 comparison.
+%   The same 100 pink-noise PAC realisations are evaluated with the Ozkurt,
+%   Canolty, Tort, and generalized-linear-model metrics. Results are retained
+%   in workspace arrays for later median-comodulogram plotting.
+%
 clear;clc;close all;
 
 addpath('\<path-to>\NARX_PAC\Utils\');
 addpath('\<path-to>\Methods\Matlab_Code');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -15,7 +20,7 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% PAC LF-sine HF-sine simple model
 %% =====================================================
 
-%%
+%% Configure the analysis interval
 tspan = 0:Ts:25;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 4000;%Fs/N;
@@ -95,7 +100,7 @@ parfor i = 1:n_smpls
     %=======================
 
     s_final_mat(:,i) = s_final_trim;
-    %% 
+    %% Complete the ensemble loop
 
 end
 
@@ -129,7 +134,7 @@ Comods_mat_GLM_robust = cat(3, Comods{8,:});
 
 Comods{5,1} = fL_vals;
 Comods{6,1} = fH_vals;
-%%
+%% Visualise the current results
 
 
 figure; tiledlayout(2,2);
@@ -150,13 +155,16 @@ imagesc(flow_GLM, fhigh_GLM, median(Comods_mat_GLM_robust,3)'); colorbar; axis x
 rect_pos_1 = [LF_freq_1(1)-0.25, HF_freq_1(1)-0.5, (abs(diff(LF_freq_1))*0.5)+1, (abs(diff(HF_freq_1))*1)+1]; rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 
 
-%%
-%%
 
 %% Local functions - PAC general
 
 % Equation adapted from Jiang et al., (2015) NeuroImage
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
+%PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
+%   S_LF and S_HF are the slow and fast components; A and C control the
+%   logistic modulation shape, M scales the fast component, and DELAY_IND
+%   delays the modulated fast component in samples. Outputs are the composite
+%   signal S_FINAL and the shifted amplitude-modulated component S_HF1_SHFT.
 s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
@@ -167,10 +175,14 @@ end
 % Simplest form of PAC generaltion in electronics
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
+%PAC_SIMPLE Generate PAC using linear amplitude modulation.
+%   S_LF and S_HF are the slow and fast components; A is the modulation
+%   depth, M scales the fast component, and DELAY_IND applies a sample delay.
+%   Outputs are the composite signal S_FINAL and the shifted modulated fast
+%   component S_HF1_SHFT.
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-%%
 end
 
 
