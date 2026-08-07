@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_TORTLABLFP Apply the conventional PAC methods to the Tortlab HFO LFP.
-%   The 200 s recording segment is evaluated with the Ozkurt, Canolty,
-%   Tort, and generalized-linear-model metrics. The resulting plot_data
-%   structure is saved for comparison with NARX-PAC.
+%PAC_OTHRMTHDS_CMDG_TORTLABLFP Apply conventional PAC methods to the Tortlab HFO LFP recording.
+%   The 200 s recording segment is analysed using the Ozkurt, Canolty, Tort,
+%   and GLM measures. Results are stored in PLOT_DATA for comparison with the
+%   NARX-PAC results.
 %
 clear all;clc;close all;
 
@@ -15,7 +15,7 @@ approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
-%% Load PAC data
+%% Load the LFP recording
 
 load('\<path-to>\NARX-PAC paper\LFP\LFP data\LFP_HG_HFO.mat');
 %or
@@ -24,12 +24,12 @@ N = length(s_final);
 tspan = 0:Ts:(N*Ts-Ts);
 fftn = 4000;%Fs/N;
 tm_frq_plt(s_final, Fs, fftn); % Visualise PAC  in time-frequency plots
-%% Down sample
+%% Downsample the LFP signal
 
 % 
 
 
-%% Trim the PAC signal to get a small segment
+%% Select the analysis segment
 tm_windw = 200; tm_itr = 0;
 trim_ind = (tm_itr*tm_windw/Ts)+1:((tm_itr+1)*tm_windw)/Ts;%(1 + (30/fL)/Ts);%
 s_final_trim = s_final(trim_ind)';%(600:1100)';
@@ -43,7 +43,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [3:1:13]; fH_vals = [30:1:200];
 
 
-%% Evaluate PAC
+%% Compute conventional PAC comodulograms
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==8,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
