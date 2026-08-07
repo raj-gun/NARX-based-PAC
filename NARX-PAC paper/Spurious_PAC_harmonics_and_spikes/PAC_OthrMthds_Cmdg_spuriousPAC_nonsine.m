@@ -1,11 +1,16 @@
+%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_NONSINE Evaluate a non-sinusoidal waveform with conventional PAC methods.
+%   This script supplies the Ozkurt, Canolty, Tort, and generalized-linear-
+%   model results used in Figure 20 to compare harmonic-related false
+%   detections with the NARX-PAC post-processed result.
+%
 clear all;clc;close all;
 
 addpath('/home/gunawardes/Documents/Matlab/CFC/NARX_PAC/Utils/');
 addpath('/home/gunawardes/Documents/Matlab/CFC/Methods/Matlab_Code/');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -15,7 +20,7 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% Spurious PAC
 %% =====================================================
 
-%%
+%% Configure the analysis interval
 tspan = 0:Ts:25-Ts;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 4000;%Fs/N;
@@ -111,7 +116,6 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 % save_file_dir = '\<path-to>\NARX-PAC paper\Spurious_PAC_harmonics_and_spikes\Data_Other_Methods\';
 % save([save_file_dir, save_file_name], 'plot_data');
 % ===============================
-%%
 
 %% =====================================================
 %% Local functions
@@ -119,6 +123,10 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 
 %% Non-sinusoidal signal
 function [s_LF] = van_d_pol_LF(tspan,w0)
+%VAN_D_POL_LF Generate a normalized non-sinusoidal Van der Pol waveform.
+%   TSPAN is the integration time vector and W0 sets the oscillator angular
+%   frequency. S_LF is the zero-mean, unit-peak slow waveform used to test
+%   harmonic-related spurious PAC.
 ep=5;%w0=100;
 
 dEqs = @(t, x) [
