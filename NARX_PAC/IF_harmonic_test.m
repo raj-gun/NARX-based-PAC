@@ -2,10 +2,11 @@ function [Comod_harmonic_rmv, IF_harmonic_test_dat] = IF_harmonic_test (All_freq
 %IF_HARMONIC_TEST Reject harmonic-related spurious PAC detections.
 %   For each detected pair, the canonical model components are summed and
 %   converted to an analytic signal. The instantaneous frequency is obtained
-%   from the time derivative of the unwrapped analytic phase. A pair is
-%   classified as harmonic-related when at least 95% of the instantaneous-
-%   frequency samples are non-negative. This implements the practical form of
-%   the criterion in Section III D, equation (18), of the paper.
+%   from the time derivative of the unwrapped analytic phase. For numerical
+%   implementation, a 95% non-negative instantaneous-frequency threshold is
+%   used to tolerate small deviations introduced by numerical phase estimation
+%   and differentiation, while approximating the theoretical condition in
+%   Section III D, equation (18), of the paper.
 %   Inputs
 %   ------
 %   All_freq_comb_1      : Numeric matrix whose first two columns contain the
@@ -32,6 +33,9 @@ for i = 1:no_freqs
     loc_prb_freq = sum(pos_freq_comp_vec == probe_freq,2)==2;
     Phs_dat_prb_freq = phs_data_mat{loc_prb_freq, 1}; 
     IFreq = diff( unwrap( angle( hilbert( sum(Phs_dat_prb_freq,2) ) ) ) ) ./ Ts;
+    % Use a 95% threshold as a numerical tolerance for small local deviations
+    % introduced by discrete Hilbert-phase estimation and differentiation; the
+    % theoretical criterion is positive instantaneous frequency for all t.
     IF_cond = IFreq >= 0;
     IF_harmonic_test_dat(i,:) = [ probe_freq , ( sum( IF_cond ) / (size(Phs_dat_prb_freq,1)-1) ) >=0.95 ];
 end
