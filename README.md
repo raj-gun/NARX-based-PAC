@@ -55,7 +55,7 @@ The principal grid-search function is [`pac_miso_Cmdg_mod_21`](NARX_PAC/pac_miso
 ```matlab
 fL_vals = 4:1:10;
 fH_vals = 30:1:100;
-filt_typ = {'sbp','sbp'};   % 'bw', 'sbp', or 'guss'
+filt_typ = {'sbp','sbp'}; 
 frq_bndw_LF = 1;
 frq_bndw_HF = 0.5;
 RCT = 3;
