@@ -1,11 +1,16 @@
+%PAC_OTHRMTHDS_CMDG_TORTLABLFP2 Apply the conventional PAC methods to the Tortlab high-gamma LFP.
+%   The 200 s recording segment is evaluated with the Ozkurt, Canolty,
+%   Tort, and generalized-linear-model metrics. The resulting plot_data
+%   structure is saved for comparison with NARX-PAC.
+%
 clear all;clc;close all;
 
 addpath('\<path-to>\NARX_PAC\Utils\');
 addpath('\<path-to>\Methods\Matlab_Code');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;

@@ -1,3 +1,8 @@
+%TORTLABLFP_EXMPL_PLTS Assemble the publication comparisons for the two Tortlab LFP examples.
+%   Saved HG and HFO results from NARX-PAC and the conventional methods are
+%   loaded and plotted as comodulograms and phase-amplitude summaries.
+%   The script produces figures only and returns no variables.
+%
 clear all;clc;close all;
 %% Load data
 

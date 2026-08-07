@@ -1,12 +1,17 @@
+%PAC_MISO_NARX_CMDG_TORTLAB_LFP Apply NARX-PAC to the Tortlab high-frequency-oscillation LFP example.
+%   The script loads the HFO recording, selects a 200 s interval, searches
+%   3-13 Hz by 30-200 Hz, and plots raw and post-processed comodulograms.
+%   Required inputs are the LFP MAT-file, NonSysID-i, and NARX-PAC utilities.
+%
 clear all;clc;close all;
 
 addpath('\<path-to>\NonSysID-i\');
 addpath('\<path-to>\NARX_PAC\');
 addpath('\<path-to>\NARX_PAC\Utils\');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -53,7 +58,7 @@ toc
 % file_name = [num2str(Fs), 'Hz_', num2str(tm_windw), 's-', num2str(tm_itr), 'wndw_', num2str(frq_bndw_LF), '-', num2str(frq_bndw_HF), '-', filt_typ{1},'_', filt_typ{2}, '_LFcos'];
 % file_dir = '/home/gunawardes/Documents/Matlab/CFC/Results/MISO_NARX/Tortlab/';
 % save([file_dir , file_name, '.mat']);
-%%
+%% Visualise the current results
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, Comods{2}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, diff_comod); colorbar; axis xy; set(gca, 'FontSize', 18);

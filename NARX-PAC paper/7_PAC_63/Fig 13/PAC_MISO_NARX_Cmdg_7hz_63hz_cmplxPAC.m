@@ -1,12 +1,17 @@
+%PAC_MISO_NARX_CMDG_7HZ_63HZ_CMPLXPAC Reproduce the NARX-PAC analysis for the Figure 13 synthetic experiment.
+%   A 7 Hz sinusoid modulates a 63 Hz sinusoid through the non-sinusoidal
+%   amplitude law. The script adds pink noise, computes the NARX-PAC maps,
+%   and applies harmonic and intermodulation-related post-processing.
+%
 clear all;clc;close all;
 
 addpath('\<path-to>\NonSysID-i\');
 addpath('\<path-to>\NARX_PAC\');
 addpath('\<path-to>\NARX_PAC\Utils\');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -80,7 +85,7 @@ sn_ratio = snr(s_final_trim,pink); disp(['SNR = ', num2str(sn_ratio), 'dB or ', 
 tm_frq_plt(s_final_trim, Fs, fftn);
 s_final_trim = pink + s_final_trim;
 tm_frq_plt(s_final_trim, Fs, fftn);
-%%
+%% Configure the signal length
 N = length(s_final_trim);
 figure;plot(tspan(trim_ind),s_final_trim);
 %----------------------
@@ -102,7 +107,7 @@ tic
     = pac_miso_Cmdg_mod_21(s_final_trim, fL_vals, fH_vals, Fs, 3, filt_typ, frq_bndw_LF, frq_bndw_HF);
 toc
 
-%%
+%% Annotate the expected coupling regions
 fL_diff = mean(abs(diff(fL_vals))); fH_diff = mean(abs(diff(fH_vals))); 
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*fL_diff)+1, (abs(diff(HF_freq))*1)+1]; 
 
@@ -129,6 +134,10 @@ figure; imagesc(fL_vals, fH_vals, Comod_harmonic); colorbar; axis xy; set(gca, '
 %% Creat LF and HF signals
 
 function [s_LF, s_HF] = rand_varying_LF_HF(LF_freq, HF_freq, Fs, N)
+%RAND_VARYING_LF_HF Generate band-limited random slow and fast signals.
+%   LF_FREQ and HF_FREQ contain the two passbands, FS is the sampling rate,
+%   and N is the sample count. Outputs S_LF and S_HF are normalized random
+%   oscillations in the requested bands.
 s_LF = randn(1,N);
 s_LF = fft_bndpss_flt( s_LF, Fs, LF_freq(1), LF_freq(2) ); s_LF = s_LF./max(abs(s_LF));
 
@@ -137,6 +146,10 @@ s_HF = fft_bndpss_flt( s_HF, Fs, HF_freq(1), HF_freq(2) ); s_HF = ( s_HF./max(ab
 end
 
 function [s_LF] = van_d_pol_LF(tspan,w0)
+%VAN_D_POL_LF Generate a normalized non-sinusoidal Van der Pol waveform.
+%   TSPAN is the integration time vector and W0 sets the oscillator angular
+%   frequency. S_LF is the zero-mean, unit-peak slow waveform used to test
+%   harmonic-related spurious PAC.
 ep=5;%w0=100;
 
 dEqs = @(t, x) [
@@ -154,11 +167,19 @@ end
 
 %FFT base bandpass filter f1<f2
 function data = fft_bndpss_flt(data_raw,Fs,f1,f2)
+%FFT_BNDPSS_FLT Extract a frequency band from a signal.
+%   DATA_RAW is the input signal, FS is the sampling rate, and F1 and F2 are
+%   the lower and upper passband edges in hertz. DATA is the bandpass-filtered
+%   signal.
 
 data = bandpass(data_raw , [f1,f2] , Fs);
 end
 
 function [F_phs] = xcorr_phs_estm(F, s_final_trim, Ts)
+%XCORR_PHS_ESTM Estimate sinusoidal phase by zero-lag cross-correlation.
+%   F is the probe frequency, S_FINAL_TRIM is the observed signal, and TS is
+%   the sampling interval. F_PHS is the phase, in radians, of the cosine probe
+%   that maximizes the zero-lag correlation.
 tspan_corr = 0:Ts:(length(s_final_trim)*Ts-Ts);%(1/F)+Ts;%
 phi_prb = (-pi:0.01:pi)'; phi_pprb_len = length(phi_prb);
 prb_inpt = cos( ( (2*pi).*F.*tspan_corr ) + phi_prb ); % probing input
@@ -171,6 +192,10 @@ F_phs = phi_prb(max_corr_ind_phi_prb);
 end
 
 function [data_noise] = add_noise(noise_type, snr, data)
+%ADD_NOISE Add white or pink noise at a requested power ratio.
+%   NOISE_TYPE selects 'white' or 'pink', SNR is the linear signal-to-noise
+%   ratio, and DATA is the clean signal. DATA_NOISE is the signal plus scaled
+%   noise.
 switch noise_type
     case 'white'
         %White noise
@@ -188,6 +213,11 @@ end
 
 % Code adapted from Jiang et al., (2015) NeuroImage
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
+%PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
+%   S_LF and S_HF are the slow and fast components; A and C control the
+%   logistic modulation shape, M scales the fast component, and DELAY_IND
+%   delays the modulated fast component in samples. Outputs are the composite
+%   signal S_FINAL and the shifted amplitude-modulated component S_HF1_SHFT.
 s_HF1 = m .* ( 1 - ( 1./(1 + exp(-a.*(s_LF-c))) ) ) .* s_HF;
 if delay_ind ~= 0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1);
 else; s_HF1_shft = s_HF1; end
@@ -198,14 +228,22 @@ end
 % Simplest form of PAC generaltion in electronics
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
+%PAC_SIMPLE Generate PAC using linear amplitude modulation.
+%   S_LF and S_HF are the slow and fast components; A is the modulation
+%   depth, M scales the fast component, and DELAY_IND applies a sample delay.
+%   Outputs are the composite signal S_FINAL and the shifted modulated fast
+%   component S_HF1_SHFT.
 s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
-%%
 end
 %% Surrogate
 
 function [surr] = randm_swap_surrg(data, nsurr, corr_min)
+%RANDM_SWAP_SURRG Generate low-correlation permutation surrogates.
+%   DATA is the input column vector, NSURR is the number of surrogates, and
+%   CORR_MIN is the maximum accepted absolute correlation with DATA. SURR
+%   contains one randomized surrogate per column.
 dat_len = length(data);
 surr = zeros(dat_len,nsurr);
 parfor i=1:nsurr

@@ -1,9 +1,14 @@
+%MULTISMPL_PLTS_L Assemble the Figures 23 and 24 repeatability comparisons.
+%   Saved median comodulograms from 100 realisations of the one-band and
+%   two-band experiments are loaded and compared across NARX-PAC and the
+%   conventional methods, with the true coupling bands annotated.
+%
 clear all;clc;close all;
 
 %% Bounding box
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 
-%%
+%% Load saved experiment results
 
 %% Load saved data
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
@@ -63,8 +68,7 @@ rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 xlabel('Low Frequency (Hz)');
 title({'NARX-based PAC D'; ' '});
 
-%%
-%%
+%% Begin the two-band repeatability comparison
 clear;clc;
 %% Load saved data
 MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';

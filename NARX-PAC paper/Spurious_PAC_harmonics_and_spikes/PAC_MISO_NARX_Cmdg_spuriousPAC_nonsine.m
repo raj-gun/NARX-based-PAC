@@ -1,12 +1,17 @@
+%PAC_MISO_NARX_CMDG_SPURIOUSPAC_NONSINE Evaluate harmonic-related spurious PAC from a non-sinusoidal waveform.
+%   This script reproduces the NARX-PAC part of Figure 20 using a noisy
+%   Van der Pol oscillation and applies the instantaneous-frequency
+%   criterion to suppress harmonic-related false detections.
+%
 clear all;clc;close all;
 
 addpath('\<path-to>\NonSysID-i\');
 addpath('\<path-to>\NARX_PAC\');
 addpath('\<path-to>\NARX_PAC\Utils\');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -16,7 +21,7 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% Spurious PAC
 %% =====================================================
 
-%%
+%% Configure the analysis interval
 tspan = 0:Ts:25-Ts;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 4000;%Fs/N;
@@ -86,13 +91,11 @@ toc
 figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gca, 'FontSize', 18);
 sgtitle('Commod after removing harmonics');
 
-%%
+%% Visualise the current results
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 
 
 
-%%
-%%
 
 %% =====================================================
 %% Local functions
@@ -100,6 +103,10 @@ figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontS
 
 %% Non-sinusoidal signal
 function [s_LF] = van_d_pol_LF(tspan,w0)
+%VAN_D_POL_LF Generate a normalized non-sinusoidal Van der Pol waveform.
+%   TSPAN is the integration time vector and W0 sets the oscillator angular
+%   frequency. S_LF is the zero-mean, unit-peak slow waveform used to test
+%   harmonic-related spurious PAC.
 ep=5;%w0=100;
 
 dEqs = @(t, x) [

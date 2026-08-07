@@ -1,3 +1,8 @@
+%D_MAP_SINGLE_PLTS Assemble the three discriminator maps shown in Figure 17.
+%   Saved results for the 7/63 Hz, 6-7/55-60 Hz, and two-band experiments
+%   are loaded into separate structures. The script extracts each sign map
+%   D and plots them on a common horizontal layout.
+%
 clear;close all;clc;
 %% Load three MAT-file workspaces into separate structure variables
 NARX_PAC_7_63       = load('\<path-to>\NARX-PAC paper\7_PAC_63\Fig 13\7-63_pinknoise.mat');
