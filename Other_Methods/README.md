@@ -13,11 +13,25 @@ The following PAC measures are included:
 
 These methods are used for the comparisons presented in the paper and supplementary figures.
 
+## Files
+
+| File | Description | Source / adaptation |
+|---|---|---|
+| `ModIndex_v2.m` | Computes the Tort et al. Modulation Index (MI) and the corresponding phase-binned mean amplitude distribution. | From the TortLab PAC source code. |
+| `modulationindex_directestimate.m` | Computes the Canolty et al. mean vector length measure and the direct PAC estimator of Özkurt and Schnitzler. | Adapted from code written for Kramer et al. [6] by Özkurt (2011) [3]. |
+| `modulationindex_directestimate_mod.m` | Modified comparison routine used in this study; includes the Canolty, Özkurt, and Tort PAC measures with adaptive filtering bandwidths. | Modified from `modulationindex_directestimate.m`, which was adapted from the Özkurt source code [3]. |
+| `general_linear_index.m` | Computes the GLM-based PAC estimates described by Penny et al. and Özkurt and Schnitzler. | Adapted from code written for Kramer et al. [6] by Özkurt (2011) [3]. |
+| `general_linear_index_mod.m` | Modified GLM comparison routine used in this study with adaptive filtering bandwidths. | Modified from `general_linear_index.m`, which was adapted from the Özkurt source code [3]. |
+| `modulationindex_stats.m` | Computes a statistically normalised Canolty modulation index using surrogate data. | Adapted from code written for Kramer et al. [6] by Özkurt (2011) [3]. |
+| `eegfilt.m` | FIR filtering routine used by the filtering-based PAC methods. | Supporting filtering routine by Scott Makeig and Arnaud Delorme. |
+| `simulate_and_compare.m` | Original example script for evaluating and comparing the filtering-based PAC measures on simulated data. | Supplied with the Özkurt source code [3]. |
+| `simulate_and_compare_edit.m` | Edited version of the original simulation and comparison script. | Modified from `simulate_and_compare.m`. |
+
 ## Original Source Code
 
 The implementations in this folder were adapted from:
 
-- MATLAB code accompanying Özkurt and Schnitzler [3], which was adapted from code written for Kramer et al.
+- MATLAB code accompanying Özkurt and Schnitzler [3], which was adapted from code written for Kramer et al. [6].
 - The [TortLab phase-amplitude-coupling repository](https://github.com/tortlab/phase-amplitude-coupling), containing MATLAB routines for computing the Modulation Index and comodulograms described by Tort et al. [1].
 
 For the comparisons used in the NARX-based PAC study, the filtering bandwidths were made adaptive following Berman et al. [5].
@@ -33,3 +47,5 @@ For the comparisons used in the NARX-based PAC study, the filtering bandwidths w
 [4] W. D. Penny, E. Duzel, K. J. Miller, and J. G. Ojemann, “Testing for nested oscillation,” *Journal of Neuroscience Methods*, vol. 174, no. 1, pp. 50–61, 2008. doi:10.1016/j.jneumeth.2008.06.035.
 
 [5] J. I. Berman, J. McDaniel, S. Liu, L. Cornew, W. Gaetz, T. P. L. Roberts, and J. C. Edgar, “Variable bandwidth filtering for improved sensitivity of cross-frequency coupling metrics,” *Brain Connectivity*, vol. 2, no. 3, pp. 155–163, 2012. doi:10.1089/brain.2012.0085.
+
+[6] M. A. Kramer, A. B. L. Tort, and N. J. Kopell, “Sharp edge artifacts and spurious coupling in EEG frequency comodulation measures,” *Journal of Neuroscience Methods*, vol. 170, no. 2, pp. 352–357, 2008. doi:10.1016/j.jneumeth.2008.01.020.
