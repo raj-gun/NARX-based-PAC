@@ -1,7 +1,7 @@
 clear all;clc;close all;
 %% Load data
 
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\Plot data\';
+file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = '500Hz_200s-0wndw_1-0.5-sbp_sbp_LFcos_2.mat';
 MISO_NARX_HG = load([file_dir,file_name]);
 
@@ -9,11 +9,11 @@ file_name = '500Hz_200s-0wndw_1-0.5-sbp_sbp_LFcos.mat';
 MISO_NARX_HFO = load([file_dir,file_name]);
 
 
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\Plot data\';
+file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = 'HFO.mat';
 Othr_Mthds_HFO = load([file_dir,file_name]);
 
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\Plot data\';
+file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = 'HG.mat';
 Othr_Mthds_HG = load([file_dir,file_name]);
 % plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} , ...
@@ -63,11 +63,11 @@ imagesc(MISO_NARX_HG.fL_vals, MISO_NARX_HG.fH_vals, MISO_NARX_HG.Comods{1});  co
 xlabel('Low Frequency (Hz)');
 
 %% PLots Phs data
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\Plot data\';
+file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = 'phs_PltDat.mat';
 MISO_NARX_phs_HFO = load([file_dir,file_name]);
 
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\Plot data\';
+file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = 'phs_PltDat_2.mat';
 MISO_NARX_phs_HG = load([file_dir,file_name]);
 %{bin_centers_mat, HF_freqs, amp_mean_mat, phs_grd , HF_freqs_grd}

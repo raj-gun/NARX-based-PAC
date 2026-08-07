@@ -4,13 +4,13 @@ clear all;clc;close all;
 rect_pos_box = @(LF_freq, HF_freq, fL_diff, fH_diff) [LF_freq(1)-fL_diff*0.5, HF_freq(1)-fH_diff*0.5, (abs(diff(LF_freq))*1)+1, (abs(diff(HF_freq))*1)+1]; 
 
 %% Load saved data SNR 2
-MISO_NARX_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
+MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_2_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
 Comod_D_NARX_PAC = Comods_D_mat;
 Comods_PP_intrmd = Comods_intrmd_mat; 
 
-Othr_Mthds_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
+Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_9-10__35-40__70-80_SNR_2.mat']);
 
 %% Plots
@@ -84,13 +84,13 @@ title({'NARX-based PAC D'; ' '});
 %%
 %%
 %% Load saved data SNR 1
-MISO_NARX_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
+MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([MISO_NARX_dir,'F1_1_10s_wrk_PP.mat']);
 Comod_NARX_PAC = Comods_mat;
 Comod_D_NARX_PAC = Comods_D_mat;
 Comods_PP_intrmd = Comods_intrmd_mat; 
 
-Othr_Mthds_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
+Othr_Mthds_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 load([Othr_Mthds_dir,'PAC_OthrMthds_9-10__35-40__70-80_SNR_1.mat']);
 
 %% Plots

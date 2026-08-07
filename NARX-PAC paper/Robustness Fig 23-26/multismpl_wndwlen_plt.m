@@ -1,7 +1,7 @@
 clear all;clc;close all;
 
 %% Load saved data
-MISO_NARX_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
+MISO_NARX_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\Median_100_samples\Plot data\';
 dat_1_2 = load([MISO_NARX_dir,'F2_3_2s_wrk_PP.mat']); 
 Comod_NARX_PAC_1_2 = {dat_1_2.Comods_intrmd_mat, dat_1_2.fH_vals, dat_1_2.fL_vals};
 
@@ -17,7 +17,7 @@ fL_diff = mean(abs(diff(dat_1_2.fL_vals))); fH_diff = mean(abs(diff(dat_1_2.fH_v
 
 clear dat_1_2 dat_1_3 dat_1_5;
 
-MISO_NARX_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
+MISO_NARX_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\Median_100_samples\Plot data\';
 dat_2_2 = load([MISO_NARX_dir,'F1_3_2s_wrk_PP.mat']);
 Comod_NARX_PAC_2_2 = {dat_2_2.Comods_intrmd_mat, dat_2_2.fH_vals, dat_2_2.fL_vals};
 

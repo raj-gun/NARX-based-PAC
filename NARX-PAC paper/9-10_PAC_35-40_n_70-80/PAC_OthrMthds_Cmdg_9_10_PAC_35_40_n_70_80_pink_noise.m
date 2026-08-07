@@ -1,7 +1,7 @@
 clear all;clc;close all;
 
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Methods\Matlab_Code');
+addpath('\<path-to>\NARX_PAC\Utils\');
+addpath('\<path-to>\Methods\Matlab_Code');
 %%
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
@@ -189,7 +189,7 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 % Synthetic_exmpl_9_10__35_40_n_70_80_SNR_3_plts.m
 
 % save_file_name = 'PAC_OthrMthds_9_10_PAC_35_40_n_70_80';
-% save_file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\';
+% save_file_dir = '\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\';
 % save([save_file_dir, save_file_name], 'plot_data');
 % ===============================
 %%

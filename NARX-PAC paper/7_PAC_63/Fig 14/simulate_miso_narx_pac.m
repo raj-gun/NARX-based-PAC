@@ -16,11 +16,11 @@
 
 %% Reset the workspace and configure external paths
 clear all;clc;close all;
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\NonSysID-i\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils');
+addpath('\<path-to>\NonSysID-i\');
+addpath('\<path-to>\NARX_PAC\');
+addpath('\<path-to>\NARX_PAC\Utils');
 %% Load a saved NARX-PAC experiment and inspect its comodulogram
-file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\7_PAC_63\Fig 13\';
+file_dir = '\<path-to>\NARX-PAC paper\7_PAC_63\Fig 13\';
 file_name = '7-63_pinknoise';
 load([file_dir,file_name]);
 figure; imagesc(fL_vals, fH_vals, Comod_intrmd); colorbar; axis xy; set(gca, 'FontSize', 18); %axis([3,20, 35,95,-inf,inf]);

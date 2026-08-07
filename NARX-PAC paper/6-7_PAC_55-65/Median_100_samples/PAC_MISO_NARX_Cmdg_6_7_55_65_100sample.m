@@ -1,8 +1,8 @@
 clear;clc;close all;
 
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\NonSysID-i\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils\');
+addpath('\<path-to>\NonSysID-i\');
+addpath('\<path-to>\NARX_PAC\');
+addpath('\<path-to>\NARX_PAC\Utils\');
 %%
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;

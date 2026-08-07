@@ -1,8 +1,8 @@
 clear;close all;clc;
 %% Load three MAT-file workspaces into separate structure variables
-NARX_PAC_7_63       = load('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\7_PAC_63\Fig 13\7-63_pinknoise.mat');
-NARX_PAC_rng_single = load('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\6-7_PAC_55-65\6-7_55-65_pinknoise_SNR_3.mat');
-NARX_PAC_rng_double = load('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\9-10_PAC_35-40_n_70-80\9-10_35-40_70-80_pinknoise_SNR_3.mat');
+NARX_PAC_7_63       = load('\<path-to>\NARX-PAC paper\7_PAC_63\Fig 13\7-63_pinknoise.mat');
+NARX_PAC_rng_single = load('\<path-to>\NARX-PAC paper\6-7_PAC_55-65\6-7_55-65_pinknoise_SNR_3.mat');
+NARX_PAC_rng_double = load('\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\9-10_35-40_70-80_pinknoise_SNR_3.mat');
 
 
 %% Extract x, y, and z arrays

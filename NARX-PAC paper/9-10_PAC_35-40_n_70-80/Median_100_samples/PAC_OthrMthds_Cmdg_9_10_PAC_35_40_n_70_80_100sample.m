@@ -1,7 +1,7 @@
 clear;clc;close all;
 
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Methods\Matlab_Code');
+addpath('\<path-to>\NARX_PAC\Utils\');
+addpath('\<path-to>\Methods\Matlab_Code');
 %%
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;

@@ -1,5 +1,5 @@
 clear;clc;close all;
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils');
+addpath('\<path-to>\NARX_PAC\Utils');
 %%
 Fs = 1000; Ts = 1/Fs;
 %%
@@ -61,12 +61,12 @@ figure;subplot(2,1,1);plot(w, abs(s_final_fft));subplot(2,1,2);plot(w, angle(s_f
 %%
 
 OthrMthds_file_name = 'PAC_OthrMthds_6-7_55-60_SNR_3';
-OthrMthds_file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\6-7_PAC_55-65\';
+OthrMthds_file_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\';
 OthrMthds_plt_data = load([OthrMthds_file_dir, OthrMthds_file_name, '.mat']);
 % plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} , ...
 %               {GLM_org, GLM_2, GLM_robust, flow_GLM, fhigh_GLM} };
 
-MISO_NARX_file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\6-7_PAC_55-65\';
+MISO_NARX_file_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\';
 MISO_NARX_file_name = '6-7_55-65_pinknoise_SNR_3';
 %-----------------
 MISO_NARX_plt_dat = load([MISO_NARX_file_dir,MISO_NARX_file_name,'.mat']);

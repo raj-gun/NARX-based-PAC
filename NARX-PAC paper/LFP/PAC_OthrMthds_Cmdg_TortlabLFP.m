@@ -1,7 +1,7 @@
 clear all;clc;close all;
 
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\Utils\');
-addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Methods\Matlab_Code');
+addpath('\<path-to>\NARX_PAC\Utils\');
+addpath('\<path-to>\Methods\Matlab_Code');
 %%
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
@@ -12,7 +12,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% Load PAC data
 
-load('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\LFP\LFP data\LFP_HG_HFO.mat');
+load('\<path-to>\NARX-PAC paper\LFP\LFP data\LFP_HG_HFO.mat');
 % s_final = lfpHG;
 %or
 s_final = lfpHFO;

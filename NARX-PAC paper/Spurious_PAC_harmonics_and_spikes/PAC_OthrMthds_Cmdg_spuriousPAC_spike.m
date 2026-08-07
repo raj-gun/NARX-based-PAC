@@ -135,7 +135,7 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 % Use the following code snippet to save the workspace for plotting
 
 % save_file_name = 'spike_train';
-% save_file_dir = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX-PAC paper\Spurious_PAC_harmonics_and_spikes\Data_Other_Methods\';
+% save_file_dir = '\<path-to>\NARX-PAC paper\Spurious_PAC_harmonics_and_spikes\Data_Other_Methods\';
 % save([save_file_dir, save_file_name], 'plot_data');
 % ===============================
 %%

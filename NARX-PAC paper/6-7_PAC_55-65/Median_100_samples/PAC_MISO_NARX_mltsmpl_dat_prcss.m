@@ -1,9 +1,9 @@
 % close all; 
 % clear all;clc;
 
-% addpath('C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\NARX_PAC\');
+% addpath('\<path-to>\NARX_PAC\');
 % 
-% file_dir_PP = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Results\MISO_NARX\SyntheticData\Multisample\';
+% file_dir_PP = '\<path-to>\Results\MISO_NARX\SyntheticData\Multisample\';
 % file_name_PP = 'F1_3_5s_wrk.mat';
 % load([file_dir_PP,file_name_PP]);
 
@@ -43,7 +43,7 @@ Comods_D_mat        = cat(3, Comods_D{:});
 
 %%
 
-% file_dir_PP = 'C:\Users\rajin\OneDrive - Coventry University\PhD project\Matlab files\CFC\Results\MISO_NARX\SyntheticData\Multisample\PP\';
+% file_dir_PP = '\<path-to>\Results\MISO_NARX\SyntheticData\Multisample\PP\';
 % file_name_PP = [ file_name_PP(1:end-4) , '_PP' , '.mat' ];
 % save([file_dir_PP,file_name_PP]);
 %%
