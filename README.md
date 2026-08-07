@@ -22,8 +22,6 @@ In the experiments reported in the accompanying paper, the method produced sharp
 - **Preferred-phase estimation**: Uses noise-free simulations of the identified model to determine the low-frequency phase at which the high-frequency amplitude reaches its maximum.  
 - **Harmonic-related spurious PAC rejection**: Applies an instantaneous-frequency criterion derived from the identified canonical dynamics.  
 - **Discriminator $\mathcal{D}$ map**: Supports the distinction between genuine PAC and intermodulation-related spurious PAC.  
-- **ARX pre-screening**: Uses a computationally inexpensive linear scan to shortlist frequency pairs before nonlinear model identification.  
-- **Synthetic and LFP examples**: Includes the experiments and plotting scripts used for simulated signals and rat hippocampal local field potential recordings in the paper.
 
 ---
 
