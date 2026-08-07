@@ -1,7 +1,7 @@
-%PAC_MISO_NARX_CMDG_SPURIOUSPAC_NONSINE Evaluate harmonic-related spurious PAC from a non-sinusoidal waveform.
-%   This script reproduces the NARX-PAC part of Figure 20 using a noisy
-%   Van der Pol oscillation and applies the instantaneous-frequency
-%   criterion to suppress harmonic-related false detections.
+%PAC_MISO_NARX_CMDG_SPURIOUSPAC_NONSINE Analyse harmonic-related spurious PAC from a non-sinusoidal waveform.
+%   The script calculates the NARX-PAC results shown in Figure 20 for a noisy
+%   Van der Pol oscillation and applies the instantaneous-frequency criterion
+%   to suppress harmonic-related false detections.
 %
 clear all;clc;close all;
 
@@ -18,7 +18,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% Spurious PAC
+%% Configure the spurious-PAC test signal
 %% =====================================================
 
 %% Configure the analysis interval
@@ -27,7 +27,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Non-sinusoidal
+%% Generate the non-sinusoidal waveform
 
 LF = 7;
 u = sin( (2*pi*LF).*tspan )./LF;
@@ -38,7 +38,7 @@ am_lag = 0;
 n_smpls = 100; rng(100,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); 
 rng( rng_seeds(60) ); [~, ~, pink, ~] = pink_noise_LF_HF(N, Fs, [9.5,10.5], [55,65]);
 
-%% Down sample
+%% Downsample the signal
 
 dwn_smpl_F = 250;
 s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
@@ -50,7 +50,7 @@ Fs = dwn_smpl_F; Ts = 1/Fs;
 pink = pink(1:dwn_smpl:N);
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 20; tm_itr = 0;
@@ -74,7 +74,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
 
 
-%% ------------------------ NARX based MISO PAC Comodulogram ------------------------------
+%% Compute the NARX-based MISO PAC comodulogram
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 0.5;
 frq_bndw_HF = 0.5;
@@ -84,14 +84,14 @@ tic
 [Comods , diff_comod, phs_data_mat, fL_grd, fH_grd, All_freq_comb_1, All_freq_comb, All_freq_comb_ARX_1, All_freq_comb_ARX_2, narx_pac_modls_1 , narx_pac_modls_2]...
     = pac_miso_Cmdg_mod_21(s_final_trim, fL_vals, fH_vals, Fs, 3, filt_typ, frq_bndw_LF, frq_bndw_HF);
 toc
-%% Post processing of results
+%% Apply harmonic- and intermodulation-related post-processing
 
 
 [Comod_harmonic_rmv, IF_harmonic_test_dat] = IF_harmonic_test(All_freq_comb_1, phs_data_mat, fL_vals, fH_vals, Comods{1}, Ts);
 figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gca, 'FontSize', 18);
 sgtitle('Commod after removing harmonics');
 
-%% Visualise the current results
+%% Plot the raw NARX-PAC comodulogram
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 
 
@@ -101,12 +101,11 @@ figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontS
 %% Local functions
 %% =====================================================
 
-%% Non-sinusoidal signal
+%% Van der Pol waveform
 function [s_LF] = van_d_pol_LF(tspan,w0)
-%VAN_D_POL_LF Generate a normalized non-sinusoidal Van der Pol waveform.
-%   TSPAN is the integration time vector and W0 sets the oscillator angular
-%   frequency. S_LF is the zero-mean, unit-peak slow waveform used to test
-%   harmonic-related spurious PAC.
+%VAN_D_POL_LF Generate a normalised non-sinusoidal Van der Pol waveform.
+%   TSPAN is the integration time vector, and W0 sets the oscillator angular
+%   frequency. S_LF is the resulting zero-mean, unit-peak waveform.
 ep=5;%w0=100;
 
 dEqs = @(t, x) [
