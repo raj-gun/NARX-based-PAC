@@ -1,7 +1,8 @@
-%PAC_MISO_NARX_CMDG_SPURIOUSPAC_SPIKE Evaluate apparent PAC produced by a periodic Gaussian spike train.
-%   This script reproduces the NARX-PAC part of Figure 22 and retains the
-%   raw, discriminator, harmonic-screened, and intermodulation-screened
-%   maps for diagnostic comparison.
+%PAC_MISO_NARX_CMDG_SPURIOUSPAC_SPIKE Analyse apparent PAC produced by a periodic Gaussian spike train.
+%   The script calculates the NARX-PAC results shown in Figure 22, including
+%   the raw comodulogram and associated diagnostic maps. These maps help
+%   identify the spike-related pattern; no formal rejection rule for this
+%   artefact is applied.
 %
 clear all;clc;close all;
 
@@ -18,7 +19,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% Spurious PAC
+%% Configure the spurious-PAC test signal
 %% =====================================================
 
 %% Configure the analysis interval
@@ -27,7 +28,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Gaussian-shaped Spike train
+%% Generate the Gaussian spike train
 
 LF = 5;
 amplitude = 3;            % In units of std dev of background
@@ -47,7 +48,7 @@ s_final = 1.19.*s_final;
 sn_ratio = snr(s_final,pink); disp(['SNR = ', num2str(sn_ratio)]);
 s_final = pink + s_final;
 
-%% Down sample
+%% Downsample the signal
 
 dwn_smpl_F = 250;
 s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
@@ -59,7 +60,7 @@ Fs = dwn_smpl_F; Ts = 1/Fs;
 pink = pink(1:dwn_smpl:N);
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 20; tm_itr = 0;
@@ -76,7 +77,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
 
 
-%% ------------------------ NARX based MISO PAC Comodulogram ------------------------------
+%% Compute the NARX-based MISO PAC comodulogram
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 0.5;
 frq_bndw_HF = 0.5;
@@ -86,7 +87,7 @@ tic
 [Comods , diff_comod, phs_data_mat, fL_grd, fH_grd, All_freq_comb_1, All_freq_comb, All_freq_comb_ARX_1, All_freq_comb_ARX_2, narx_pac_modls_1 , narx_pac_modls_2]...
     = pac_miso_Cmdg_mod_21(s_final_trim, fL_vals, fH_vals, Fs, 3, filt_typ, frq_bndw_LF, frq_bndw_HF);
 toc
-%% Post processing of results
+%% Apply harmonic- and intermodulation-related post-processing
 
 
 [Comod_harmonic_rmv, IF_harmonic_test_dat] = IF_harmonic_test(All_freq_comb_1, phs_data_mat, fL_vals, fH_vals, Comods{1}, Ts);
@@ -94,7 +95,7 @@ figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gc
 sgtitle('Commod after removing harmonics');
 
 
-%% Visualise the current results
+%% Plot the raw NARX-PAC comodulogram
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 
 
@@ -102,15 +103,15 @@ figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontS
 
 %% =====================================================
 %% Local functions
-%% =====================================================S
+%% =====================================================
 
 %% Spike train
 function [spike_train] = spike_signal(mean_interval,N,jitter,amplitude,width_samples,Fs)
 %SPIKE_SIGNAL Generate a jittered Gaussian spike train on pink noise.
 %   MEAN_INTERVAL and JITTER are in milliseconds, N is the sample count,
 %   AMPLITUDE sets the spike height, WIDTH_SAMPLES is the Gaussian full width
-%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN is the resulting
-%   noisy periodic-transient signal.
+%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN contains the
+%   pink-noise background and Gaussian spikes.
 %----------------- Generate pink noise -----------------------
 white = randn(1, N);
 f = fft(white);

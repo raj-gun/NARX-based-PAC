@@ -1,7 +1,8 @@
-%PAC_MISO_NARX_CMDG_9_10_PAC_35_40_N_70_80_PINK_NOISE Reproduce the NARX-PAC result for the Figure 16 synthetic experiment.
-%   A non-stationary 9-10 Hz slow oscillation is coupled to 35-40 Hz and
-%   70-80 Hz fast bands with biphasic and monophasic modulation, respectively.
-%   The script computes raw and post-processed NARX-PAC comodulograms.
+%PAC_MISO_NARX_CMDG_9_10_PAC_35_40_N_70_80_PINK_NOISE Compute the NARX-PAC results for Figure 16.
+%   A non-stationary 9-10 Hz slow oscillation is coupled with fast oscillations
+%   at 35-40 Hz and 70-80 Hz. The two interactions use biphasic and monophasic
+%   modulation, respectively. The script calculates the raw and post-processed
+%   NARX-PAC comodulograms.
 %
 clear;clc;close all;
 
@@ -19,7 +20,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% PAC LF-sine HF-sine simple model
+%% Configure the synthetic PAC experiment
 %% =====================================================
 
 %% Configure the analysis interval
@@ -27,7 +28,7 @@ tspan = 0:Ts:25;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
-%% Nonsine PAC single LF coupling with two distinct HFs
+%% Generate PAC between one slow and two fast bands
 
 am_lag_1 = 16;
 am_lag_2 = 90;
@@ -58,7 +59,7 @@ am_lag = max([am_lag_1,am_lag_2]);
 
 disp(['LF = ', num2str(LF_freq_1), ', HF1 = ', num2str(HF_freq_1), ', HF2 = ', num2str(HF_freq_2)]);
 
-%% Visualise PAC signal
+%% Remove samples preceding the modulation delay
 if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
@@ -68,7 +69,7 @@ if am_lag~=0
 end
 s_final_org = s_final;
 s_final_org_fft = Ts.*fft(s_final_org, fftn);
-%% Down sample
+%% Downsample the signal
 
 dwn_smpl_F = 250;
 s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
@@ -80,7 +81,7 @@ Fs = dwn_smpl_F; Ts = 1/Fs;
 pink = pink(1:dwn_smpl:N);
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 10; tm_itr = 0;
@@ -92,7 +93,7 @@ N = length(s_final_trim);
 fftn = length(s_final_trim); 
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 tm_frq_plt(s_final_trim, Fs, fftn);
-%% Add pink noise
+%% Add pink noise at the specified SNR
 pink = pink(trim_ind)';
 s_final_trim = ( 3*( std(pink)/std(s_final_trim) ) ) .* s_final_trim;
 sn_ratio = snr(s_final_trim,pink); disp(['SNR = ', num2str(sn_ratio), 'dB or ',  num2str(db2mag(sn_ratio))]);
@@ -105,7 +106,7 @@ fL_vals = [2:1:15]; fH_vals = [20:1:100];
 
 
 
-%% ------------------------ NARX based MISO PAC Comodulogram ------------------------------
+%% Compute the NARX-based MISO PAC comodulogram
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 1; 
 frq_bndw_HF = 0.5;
@@ -132,7 +133,7 @@ comod_D( comod_D > 0 ) = 1; comod_D( comod_D < 0 ) = -1;
 figure; imagesc(fL_vals, fH_vals, comod_D); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
 rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
-%%  Post processing of results
+%% Apply harmonic- and intermodulation-related post-processing
 
 
 
@@ -142,9 +143,9 @@ rectangle('Position',rect_pos_1, 'EdgeColor','r', 'LineWidth', 1);
 rectangle('Position',rect_pos_2, 'EdgeColor','r', 'LineWidth', 1);
 sgtitle('Commod after removing SC-i');
 
-%% Local functions - PAC general
+%% Local PAC signal-generation functions
 
-% Equation adapted from Jiang et al., (2015) NeuroImage
+% Equation adapted from Jiang et al. (2015), NeuroImage.
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
 %PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
 %   S_LF and S_HF are the slow and fast components; A and C control the
@@ -158,7 +159,7 @@ s_final = s_LF + s_HF1_shft;
 end
 %-----------------------------------------------------
 
-% Simplest form of PAC generaltion in electronics
+% Basic linear amplitude-modulation model of PAC.
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 %PAC_SIMPLE Generate PAC using linear amplitude modulation.

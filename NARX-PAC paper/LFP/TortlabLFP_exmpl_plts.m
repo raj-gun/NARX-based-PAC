@@ -1,10 +1,11 @@
-%TORTLABLFP_EXMPL_PLTS Assemble the publication comparisons for the two Tortlab LFP examples.
-%   Saved HG and HFO results from NARX-PAC and the conventional methods are
-%   loaded and plotted as comodulograms and phase-amplitude summaries.
-%   The script produces figures only and returns no variables.
+%TORTLABLFP_EXMPL_PLTS Create the publication comparisons for the two Tortlab LFP recordings.
+%   The script loads saved high-gamma and HFO results from NARX-PAC and the
+%   conventional methods, then plots the comodulograms and phase-amplitude
+%   summaries. It creates figures directly and does not save additional
+%   result data.
 %
 clear all;clc;close all;
-%% Load data
+%% Load saved NARX-PAC and conventional-method results
 
 file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = '500Hz_200s-0wndw_1-0.5-sbp_sbp_LFcos_2.mat';
@@ -24,7 +25,7 @@ Othr_Mthds_HG = load([file_dir,file_name]);
 % plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} , ...
 %               {GLM_org, GLM_2, GLM_robust, flow_GLM, fhigh_GLM} };
 
-%% Plots PAC
+%% Plot the PAC comodulograms
 
 
 figure;
@@ -67,7 +68,7 @@ nexttile
 imagesc(MISO_NARX_HG.fL_vals, MISO_NARX_HG.fH_vals, MISO_NARX_HG.Comods{1});  colorbar; axis xy; set(gca, 'FontSize', font_size);
 xlabel('Low Frequency (Hz)');
 
-%% PLots Phs data
+%% Load the phase-amplitude results
 file_dir = '\<path-to>\NARX-PAC paper\LFP\Plot data\';
 file_name = 'phs_PltDat.mat';
 MISO_NARX_phs_HFO = load([file_dir,file_name]);
@@ -84,8 +85,8 @@ HF_freqs_HG = MISO_NARX_phs_HG.plot_data{1,1}{MISO_NARX_phs_HG_ind}{1,2};
 
 high_freq_HFO = 33;
 high_freq_HG = 80;
-%% PLots Phs
-%% PLots Phs 2
+%% Select the 8 Hz coupling results
+%% Plot phase-amplitude maps and selected-frequency profiles
 figure('Renderer','Painters');
 tiledlayout(2,4, 'TileSpacing', 'compact', 'Padding','compact');
 font_size = 12;
@@ -189,7 +190,6 @@ bar(phs_bins, phs_freq(HF_freq_ind,:),  'FaceColor', [0.2 0.6 0.8], 'EdgeAlpha',
 set(gca, 'XTick', [-pi, -0.5*pi, 0, 0.5*pi, pi]); set(gca, 'XTickLabel', {'-\pi', '-\pi/2', '0', '\pi/2', '\pi'});
 set(gca, 'FontSize', font_size);
 xlabel('Low Frequency Phase (rads)');
-%% PLots Phs 3
 
 
 

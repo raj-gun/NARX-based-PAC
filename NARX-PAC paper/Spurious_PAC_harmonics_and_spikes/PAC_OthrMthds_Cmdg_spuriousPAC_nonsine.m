@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_NONSINE Evaluate a non-sinusoidal waveform with conventional PAC methods.
-%   This script supplies the Ozkurt, Canolty, Tort, and generalized-linear-
-%   model results used in Figure 20 to compare harmonic-related false
-%   detections with the NARX-PAC post-processed result.
+%PAC_OTHRMTHDS_CMDG_SPURIOUSPAC_NONSINE Analyse a non-sinusoidal waveform using conventional PAC methods.
+%   The script calculates the Ozkurt, Canolty, Tort, and GLM results used in
+%   Figure 20 to compare harmonic-related false detections with the
+%   post-processed NARX-PAC result.
 %
 clear all;clc;close all;
 
@@ -17,7 +17,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% Spurious PAC
+%% Configure the spurious-PAC test signal
 %% =====================================================
 
 %% Configure the analysis interval
@@ -26,7 +26,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Non-sinusoidal
+%% Generate the non-sinusoidal waveform
 
 LF = 7;
 u = sin( (2*pi*LF).*tspan )./LF;
@@ -37,12 +37,12 @@ am_lag = 0;
 n_smpls = 100; rng(100,"twister"); rng_seeds = randi([1,1e5],n_smpls,1); 
 rng( rng_seeds(60) ); [~, ~, pink, ~] = pink_noise_LF_HF(N, Fs, [9.5,10.5], [55,65]);
 
-%% Down sample
+%% Downsample the signal
 
 % 
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 20; tm_itr = 0;
@@ -66,7 +66,7 @@ tm_frq_plt(s_final_trim, Fs, fftn);
 fL_vals = [1:1:20]; fH_vals = [15:1:90];
 
 
-%% Evaluate PAC
+%% Compute conventional PAC comodulograms
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==6,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
@@ -121,12 +121,11 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 %% Local functions
 %% =====================================================
 
-%% Non-sinusoidal signal
+%% Van der Pol waveform
 function [s_LF] = van_d_pol_LF(tspan,w0)
-%VAN_D_POL_LF Generate a normalized non-sinusoidal Van der Pol waveform.
-%   TSPAN is the integration time vector and W0 sets the oscillator angular
-%   frequency. S_LF is the zero-mean, unit-peak slow waveform used to test
-%   harmonic-related spurious PAC.
+%VAN_D_POL_LF Generate a normalised non-sinusoidal Van der Pol waveform.
+%   TSPAN is the integration time vector, and W0 sets the oscillator angular
+%   frequency. S_LF is the resulting zero-mean, unit-peak waveform.
 ep=5;%w0=100;
 
 dEqs = @(t, x) [

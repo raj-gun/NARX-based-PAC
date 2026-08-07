@@ -1,7 +1,8 @@
-%PAC_MISO_NARX_CMDG_TORTLAB_LFP2 Apply NARX-PAC to the Tortlab high-gamma rat hippocampal LFP example.
-%   The script loads the HG recording, selects a 200 s interval, searches
-%   3-13 Hz by 30-200 Hz, and plots raw and post-processed comodulograms.
-%   Required inputs are the LFP MAT-file, NonSysID-i, and NARX-PAC utilities.
+%PAC_MISO_NARX_CMDG_TORTLAB_LFP2 Apply NARX-PAC to the Tortlab high-gamma LFP recording.
+%   The script loads a 200 s high-gamma recording, evaluates coupling over
+%   3-13 Hz and 30-200 Hz, and plots the raw and post-processed comodulograms.
+%   Required inputs are the LFP MAT-file, NonSysID-i, and the NARX-PAC
+%   utilities.
 %
 clear all;clc;close all;
 
@@ -16,7 +17,7 @@ approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
-%% Load PAC data
+%% Load the LFP recording
 
 load('\<path-to>\NARX-PAC paper\LFP\LFP data\LFP_HG_HFO.mat');
 s_final = lfpHG;
@@ -24,7 +25,7 @@ s_final = lfpHG;
 N = length(s_final);
 tspan = 0:Ts:(N*Ts-Ts);
 fftn = 4000;%Fs/N;
-%% Down sample
+%% Downsample the LFP signal
 
 dwn_smpl_F = 500;
 s_final = lowpss_fft_filt(s_final, Fs, (dwn_smpl_F/2)-2, 2);
@@ -34,7 +35,7 @@ tspan = tspan(1:dwn_smpl:N);
 
 Fs = dwn_smpl_F; Ts = 1/Fs;
 
-%% Trim the PAC signal to get a small segment
+%% Select the analysis segment
 tm_windw = 200; tm_itr = 0;
 trim_ind = (tm_itr*tm_windw/Ts)+1:((tm_itr+1)*tm_windw)/Ts;
 s_final_trim = s_final(trim_ind)';
@@ -45,7 +46,7 @@ w = 0:Fs/fftn:Fs-(Fs/fftn);
 
 fL_vals = [3:1:13]; fH_vals = [30:1:200];
 
-%% ------------------------ NARX based MISO PAC Comodulogram ------------------------------
+%% Compute the NARX-based MISO PAC comodulogram
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 1; 
 frq_bndw_HF = 0.5;
@@ -57,7 +58,7 @@ toc
 % file_name = [num2str(Fs), 'Hz_', num2str(tm_windw), 's-', num2str(tm_itr), 'wndw_', num2str(frq_bndw_LF), '-', num2str(frq_bndw_HF), '-', filt_typ{1},'_', filt_typ{2}, '_LFcos_2'];
 % file_dir = '/home/gunawardes/Documents/Matlab/CFC/Results/MISO_NARX/Tortlab/';
 % save([file_dir , file_name, '.mat']);
-%% Visualise the current results
+%% Plot the raw and post-processed NARX-PAC maps
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, Comods{2}); colorbar; axis xy; set(gca, 'FontSize', 18);
 figure; imagesc(fL_vals, fH_vals, diff_comod); colorbar; axis xy; set(gca, 'FontSize', 18);

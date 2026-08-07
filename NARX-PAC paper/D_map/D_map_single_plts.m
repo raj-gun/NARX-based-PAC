@@ -1,16 +1,16 @@
-%D_MAP_SINGLE_PLTS Assemble the three discriminator maps shown in Figure 17.
-%   Saved results for the 7/63 Hz, 6-7/55-60 Hz, and two-band experiments
-%   are loaded into separate structures. The script extracts each sign map
-%   D and plots them on a common horizontal layout.
+%D_MAP_SINGLE_PLTS Create the three discriminator maps shown in Figure 17.
+%   The script loads saved results for the 7/63 Hz, 6-7/55-60 Hz, and two-band
+%   experiments, extracts the discriminator-sign map for each case, and plots
+%   the three maps in a common horizontal layout.
 %
 clear;close all;clc;
-%% Load three MAT-file workspaces into separate structure variables
+%% Load the three experiment result files
 NARX_PAC_7_63       = load('\<path-to>\NARX-PAC paper\7_PAC_63\Fig 13\7-63_pinknoise.mat');
 NARX_PAC_rng_single = load('\<path-to>\NARX-PAC paper\6-7_PAC_55-65\6-7_55-65_pinknoise_SNR_3.mat');
 NARX_PAC_rng_double = load('\<path-to>\NARX-PAC paper\9-10_PAC_35-40_n_70-80\9-10_35-40_70-80_pinknoise_SNR_3.mat');
 
 
-%% Extract x, y, and z arrays
+%% Extract the frequency grids and discriminator maps
 % Change these field names to match the variables stored in each MAT-file.
 x1 = NARX_PAC_7_63.fL_vals;
 y1 = NARX_PAC_7_63.fH_vals;
@@ -24,7 +24,7 @@ x3 = NARX_PAC_rng_double.fL_vals;
 y3 = NARX_PAC_rng_double.fH_vals;
 z3 = NARX_PAC_rng_double.comod_D;
 
-%% Create three horizontally arranged imagesc plots
+%% Plot the three discriminator maps
 figure;
 
 tiledlayout(1, 3, ...

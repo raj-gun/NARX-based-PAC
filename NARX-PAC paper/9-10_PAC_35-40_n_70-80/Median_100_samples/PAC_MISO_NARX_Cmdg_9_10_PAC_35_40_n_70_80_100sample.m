@@ -1,7 +1,8 @@
-%PAC_MISO_NARX_CMDG_9_10_PAC_35_40_N_70_80_100SAMPLE Generate the NARX-PAC ensemble used for the Figures 24-26 studies.
-%   One hundred pink-noise realisations contain a 9-10 Hz slow oscillation
-%   coupled to 35-40 Hz and 70-80 Hz fast bands. The saved outputs support
-%   repeatability, noise-robustness, and short-window comparisons.
+%PAC_MISO_NARX_CMDG_9_10_PAC_35_40_N_70_80_100SAMPLE Generate the NARX-PAC ensembles for Figures 24-26.
+%   One hundred pink-noise realisations contain coupling between a 9-10 Hz
+%   slow oscillation and fast oscillations at 35-40 Hz and 70-80 Hz. The saved
+%   results support the repeatability, noise-robustness, and short-window
+%   analyses.
 %
 clear all;clc;close all;
 
@@ -18,7 +19,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% PAC LF-sine HF-sine simple model
+%% Configure the synthetic PAC experiment
 %% =====================================================
 
 %% Configure the analysis interval
@@ -27,7 +28,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Sys ID params
+%% Set system-identification parameters
 
 filt_typ = {'sbp','sbp'}; % bw , sbp , guss
 frq_bndw_LF = 1;
@@ -37,12 +38,12 @@ disp(['frq_bndw_LF = ', num2str(frq_bndw_LF), ', frq_bndw_HF = ', num2str(frq_bn
 fL_vals = [2:1:15];
 fH_vals = [20:1:100];
 
-%Down-sample params
+% Downsampling parameters
 dwn_smpl_F = 250;
 dwn_smpl_T = 1/dwn_smpl_F;
 dwn_smpl = Fs/dwn_smpl_F;
 
-%% PAC signal params
+%% Set PAC signal parameters
 
 SNR = 3;
 tm_windw = 10;
@@ -61,12 +62,12 @@ m1 = 0.5; A1 = 50;
 m2 = 0.25; A2 = 150;
 am_lag_1 = 16; am_lag_2 = 90; am_lag = max([am_lag_1,am_lag_2]);
 
-%PAC signal trimming params
+% PAC signal trimming parameters
 tm_itr = 0;
 trim_ind = (tm_itr*tm_windw/dwn_smpl_T)+1:((tm_itr+1)*tm_windw)/dwn_smpl_T;%(1 + (30/fL)/Ts);%
 len_trim_ind = length(trim_ind);
 
-%% Nonsine PAC single LF coupling with two distinct HFs
+%% Generate PAC between one slow and two fast bands
 
 s_final_mat = zeros(len_trim_ind, n_smpls);
 
@@ -125,7 +126,7 @@ for i = 1:n_smpls
 
 end
 
-%% NARX based MISO PAC Comodulogram
+%% Compute the NARX-based MISO PAC comodulogram
 Comods = cell(1,n_smpls);
 Comods_diff = cell(1,n_smpls);
 All_freq_comb_dat = cell(1,n_smpls);
@@ -157,12 +158,12 @@ if save_data
     file_name = ['F1_', num2str(SNR) ,'_', num2str(tm_windw) ,'s_wrk.mat'];
     save([file_dir,file_name]);
 end
-%% Run post-processing after this
-% Run the file PAC_MISO_NARX_mltsmpl_dat_prcss.m
+%% Next step: post-process the ensemble
+% Run PAC_MISO_NARX_mltsmpl_dat_prcss.m.
 
-%% Local functions - PAC general
+%% Local PAC signal-generation functions
 
-% Equation adapted from Jiang et al., (2015) NeuroImage
+% Equation adapted from Jiang et al. (2015), NeuroImage.
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
 %PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
 %   S_LF and S_HF are the slow and fast components; A and C control the
@@ -176,7 +177,7 @@ s_final = s_LF + s_HF1_shft;
 end
 %-----------------------------------------------------
 
-% Simplest form of PAC generaltion in electronics
+% Basic linear amplitude-modulation model of PAC.
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 %PAC_SIMPLE Generate PAC using linear amplitude modulation.

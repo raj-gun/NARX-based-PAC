@@ -1,7 +1,7 @@
-%PAC_OTHRMTHDS_CMDG_6_7_55_65_PINK_NOISE Reproduce the conventional PAC results for the Figure 15 experiment.
-%   The same 6-7 Hz by 55-60 Hz pink-noise PAC signal is evaluated with
-%   Ozkurt, Canolty, Tort, and generalized-linear-model metrics. The
-%   workspace output plot_data is consumed by the comparison plotting script.
+%PAC_OTHRMTHDS_CMDG_6_7_55_65_PINK_NOISE Compute the conventional PAC results for Figure 15.
+%   The same pink-noise PAC signal, with coupling between 6-7 Hz and 55-60 Hz,
+%   is analysed using the Ozkurt, Canolty, Tort, and GLM measures. Results are
+%   stored in PLOT_DATA for use by the comparison plotting script.
 %
 clear all;clc;close all;
 
@@ -17,7 +17,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% PAC LF-sine HF-sine simple model
+%% Configure the synthetic PAC experiment
 %% =====================================================
 
 %% Configure the analysis interval
@@ -26,7 +26,7 @@ N = length(tspan);
 fftn = 4000;%Fs/N;
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 
-%% Nonsine PAC single LF coupling a single HF
+%% Generate PAC between one slow and one fast band
 
 am_lag = 16;
 %----------
@@ -48,7 +48,7 @@ m = 0.5; A = 200; C = 1*1e-6;
 disp(['LF = ', num2str(LF_freq_1), ', HF = ', num2str(HF_freq_1)]);
 
 
-%% Visualise PAC signal
+%% Remove samples preceding the modulation delay
 if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
@@ -58,12 +58,12 @@ if am_lag~=0
 end
 s_final_org = s_final;
 s_final_org_fft = Ts.*fft(s_final_org, fftn);
-%% Down sample
+%% Downsample the signal
 
 % 
 
 
-%% Test single  sample of noise
+%% Select and trim one signal segment
 
 %Trim the PAC signal to get a small segment
 tm_windw = 10; tm_itr = 0;
@@ -75,7 +75,7 @@ N = length(s_final_trim);
 fftn = length(s_final_trim); 
 w = 0:Fs/fftn:Fs-(Fs/fftn);
 tm_frq_plt(s_final_trim, Fs, fftn);
-%% Add pink noise
+%% Add pink noise at the specified SNR
 pink = pink(trim_ind)';
 s_final_trim = ( 3*( std(pink)/std(s_final_trim) ) ) .* s_final_trim;
 sn_ratio = snr(s_final_trim,pink); disp(['SNR = ', num2str(sn_ratio), 'dB or ',  num2str(db2mag(sn_ratio))]);
@@ -88,7 +88,7 @@ fL_vals = [2:1:15]; fH_vals = [20:1:100];
 
 
 
-%% Evaluate PAC
+%% Compute conventional PAC comodulograms
 [OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins] = modulationindex_directestimate_mod(s_final_trim', Fs,fL_vals,fH_vals,0.5,0.5,100);
 
 phs_freq = reshape(Phs_Amp(flow_MI==6,:,:), size(Phs_Amp,2), size(Phs_Amp,3) );
@@ -139,9 +139,9 @@ plot_data = { {OzktMI, CanltyMI, TortMI, Phs_Amp, flow_MI, fhigh_MI, phs_bins} ,
 % save_file_dir = '\<path-to>\NARX-PAC paper\6-7_PAC_55-65\';
 % save([save_file_dir, save_file_name], 'plot_data');
 % ===============================
-%% Local functions - PAC general
+%% Local PAC signal-generation functions
 
-% Equation adapted from Jiang et al., (2015) NeuroImage
+% Equation adapted from Jiang et al. (2015), NeuroImage.
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
 %PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
 %   S_LF and S_HF are the slow and fast components; A and C control the
@@ -155,7 +155,7 @@ s_final = s_LF + s_HF1_shft;
 end
 %-----------------------------------------------------
 
-% Simplest form of PAC generaltion in electronics
+% Basic linear amplitude-modulation model of PAC.
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 %PAC_SIMPLE Generate PAC using linear amplitude modulation.

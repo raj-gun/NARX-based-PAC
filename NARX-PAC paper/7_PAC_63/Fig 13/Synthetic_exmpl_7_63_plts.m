@@ -1,7 +1,8 @@
-%SYNTHETIC_EXMPL_7_63_PLTS Assemble the Figure 13 synthetic-signal and method-comparison panels.
-%   The script regenerates the noisy 7 Hz by 63 Hz PAC signal, loads saved
-%   outputs from NARX-PAC and the conventional methods, and formats the
-%   signal, spectrum, comodulograms, and phase-amplitude summaries.
+%SYNTHETIC_EXMPL_7_63_PLTS Create the signal and method-comparison panels for Figure 13.
+%   The script regenerates the noisy synthetic PAC signal with coupling
+%   between 7 Hz and 63 Hz, loads saved NARX-PAC and conventional-method
+%   results, and formats the signal, spectrum, comodulograms, and
+%   phase-amplitude summaries.
 %
 clear;clc;close all;
 addpath('\<path-to>\NARX_PAC\Utils');
@@ -14,7 +15,7 @@ rand_rng = @(a,b) a + (b-a)*rand;
 rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 
 %% =====================================================
-%% PAC LF-sine HF-sine simple model
+%% Configure the synthetic PAC experiment
 %% =====================================================
 
 %% Configure the analysis interval
@@ -44,10 +45,10 @@ s_final = pink + s_final;
 
 
 disp([fL,fH]); disp([f_phi,am_lag]);
-%% Visualise the current results
+%% Inspect the signal in the time and frequency domains
 
 tm_frq_plt(s_final, Fs, fftn);
-%% Visualise PAC signal
+%% Align the signal and compute its spectrum
 if am_lag~=0
     s_final = s_final(am_lag:end);
     tspan = tspan(am_lag:end);
@@ -83,7 +84,7 @@ plots(w, s_final_fft, tspan, s_final, font_size, t3, 1, [1,1]);
 Mthds_plt(OthrMthds_plt_data,MISO_NARX_plt_dat,font_size,t3, 2, [1,2]);
 %-------------------------
 
-%% Phase angle
+%% Plot phase-amplitude summaries
 %Trim the PAC signal to get a small segment
 tm_windw = 10; tm_itr = 0;
 trim_ind = (tm_itr*tm_windw/Ts)+1:((tm_itr+1)*tm_windw)/Ts;%(1 + (30/fL)/Ts);%
@@ -138,9 +139,9 @@ if plt
 end
 end
 
-%% PAC general
+%% PAC signal-generation functions
 
-% Equation adapted from Jiang et al., (2015) NeuroImage
+% Equation adapted from Jiang et al. (2015), NeuroImage.
 function [s_final, s_HF1_shft] = pac_general_1(s_LF, s_HF, a, c, m, delay_ind)
 %PAC_GENERAL_1 Generate PAC using non-sinusoidal amplitude modulation.
 %   S_LF and S_HF are the slow and fast components; A and C control the
@@ -154,7 +155,7 @@ s_final = s_LF + s_HF1_shft;
 end
 %-----------------------------------------------------
 
-% Simplest form of PAC generaltion in electronics
+% Basic linear amplitude-modulation model of PAC.
 %(J. Smith, Mathematics of the discrete Fourier transform (DFT). [North Charleston]: BookSurge, 2010.)
 function [s_final, s_HF1_shft] = pac_simple(s_LF, s_HF, a, m, delay_ind)
 %PAC_SIMPLE Generate PAC using linear amplitude modulation.
@@ -173,8 +174,8 @@ function [spike_train] = spike_signal(mean_interval,N,jitter,amplitude,width_sam
 %SPIKE_SIGNAL Generate a jittered Gaussian spike train on pink noise.
 %   MEAN_INTERVAL and JITTER are in milliseconds, N is the sample count,
 %   AMPLITUDE sets the spike height, WIDTH_SAMPLES is the Gaussian full width
-%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN is the resulting
-%   noisy periodic-transient signal.
+%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN contains the
+%   pink-noise background and Gaussian spikes.
 %----------------- Generate pink noise -----------------------
 white = randn(1, N);
 f = fft(white);
@@ -205,17 +206,18 @@ end
 
 end
 
-%% Plotting
+%% Plotting functions
 function plots(w, s_final_fft, tspan, s_final, font_size, tile_tag, tile_no, tile_spn)
-%PLOTS Draw the publication time-trace and magnitude-spectrum panel.
+%PLOTS Plot the time-domain signal and its magnitude spectrum.
 %   W and S_FINAL_FFT provide the frequency axis and spectrum; TSPAN and
-%   S_FINAL provide the time-domain data. FONT_SIZE and the TILE_* arguments
-%   control placement in the parent tiled layout. This helper returns no data.
+%   S_FINAL provide the time-domain data. FONT_SIZE sets the text size, while
+%   TILE_TAG, TILE_NO, and TILE_SPN define the position in the parent tiled
+%   layout. The function has no output arguments.
 %---------------
 box_top = max(abs(s_final_fft))*1.0;
 %---------------
-str = '#006801e3'; color_raw = [sscanf(str(2:end),'%2x%2x%2x',[1 3])/255 , 1]; % raw singal color
-str = '#D95319'; color_fft = [sscanf(str(2:end),'%2x%2x%2x',[1 3])/255 , 1]; % Magnitude spectrum line color
+str = '#006801e3'; color_raw = [sscanf(str(2:end),'%2x%2x%2x',[1 3])/255 , 1]; % Raw-signal colour
+str = '#D95319'; color_fft = [sscanf(str(2:end),'%2x%2x%2x',[1 3])/255 , 1]; % Magnitude-spectrum line colour
 %---------------
 t1=tiledlayout(tile_tag,4,1);
 t1.Layout.Tile = tile_no;
@@ -238,11 +240,12 @@ set(ax4,'YTick',[]); set(ax4, 'FontSize', font_size); box(ax4,'off');
 end
 
 function Mthds_plt(OthrMthds_plt_data,MISO_NARX_plt_dat,font_size,tile_tag, tile_no, tile_spn)
-%MTHDS_PLT Draw conventional and NARX-PAC comodulogram panels.
-%   OTHRMTHDS_PLT_DATA and MISO_NARX_PLT_DAT contain saved method outputs;
-%   FONT_SIZE and TILE_* control the tiled layout. Any remaining arguments
-%   set scenario-specific axis limits and label positions. This helper
-%   produces plots and returns no data.
+%MTHDS_PLT Plot conventional and NARX-PAC comodulograms.
+%   OTHRMTHDS_PLT_DATA and MISO_NARX_PLT_DAT contain the saved method results.
+%   FONT_SIZE sets the text size; TILE_TAG, TILE_NO, and TILE_SPN define the
+%   tiled-layout position. AXIS_LIM sets the displayed frequency ranges, while
+%   TT_POS and YLAB_POS adjust the title and y-axis label positions. The
+%   function has no output arguments.
 flow_MI = OthrMthds_plt_data.plot_data{1,1}{1,5};
 fhigh_MI = OthrMthds_plt_data.plot_data{1,1}{1,6};
 t2 = tiledlayout(tile_tag,2,2, 'TileSpacing','loose', 'Padding', 'loose');
