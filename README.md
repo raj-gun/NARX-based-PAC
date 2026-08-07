@@ -67,9 +67,9 @@ RCT = 3;
     filt_typ, frq_bndw_LF, frq_bndw_HF);
 
 % Discriminator D map
-comod_D = diff_comod;
-comod_D(comod_D > 0) = 1;
-comod_D(comod_D < 0) = -1;
+D_map = diff_comod;
+D_map(D_map > 0) = 1;
+D_map(D_map < 0) = -1;
 
 figure;
 imagesc(fL_vals, fH_vals, Comods{1});
@@ -79,7 +79,7 @@ xlabel('Low frequency (Hz)');
 ylabel('High frequency (Hz)');
 ```
 
-`Comods{1}` contains the thresholded NARX-PAC comodulogram, `Comods{2}` contains the raw comodulogram, and `diff_comod` contains the normalised high-frequency-magnitude minus modulation-strength map used to construct the discriminator $\mathcal{D}$ map. The signed discriminator map is stored as `comod_D` in the example scripts. The example scripts show how to apply [`IF_harmonic_test`](NARX_PAC/IF_harmonic_test.m) and [`SpuCup_intrmd_2`](NARX_PAC/SpuCup_intrmd_2.m) for post-processing.
+`Comods{1}` contains the thresholded NARX-PAC comodulogram, `Comods{2}` contains the raw comodulogram, and `diff_comod` contains the normalised high-frequency-magnitude minus modulation-strength map used to construct the discriminator $\mathcal{D}$ map. The signed discriminator map is stored as `D_map` in the basic-use example. The example scripts show how to apply [`IF_harmonic_test`](NARX_PAC/IF_harmonic_test.m) and [`SpuCup_intrmd_2`](NARX_PAC/SpuCup_intrmd_2.m) for post-processing.
 
 ### Repository structure
 - [`NARX_PAC`](NARX_PAC/) contains the principal NARX-PAC functions and utilities.  
