@@ -1,12 +1,17 @@
+%PAC_MISO_NARX_CMDG_SPURIOUSPAC_SPIKE Evaluate apparent PAC produced by a periodic Gaussian spike train.
+%   This script reproduces the NARX-PAC part of Figure 22 and retains the
+%   raw, discriminator, harmonic-screened, and intermodulation-screened
+%   maps for diagnostic comparison.
+%
 clear all;clc;close all;
 
 addpath('\<path-to>\NonSysID-i\');
 addpath('\<path-to>\NARX_PAC\');
 addpath('\<path-to>\NARX_PAC\Utils\');
-%%
+%% Set sampling and plotting parameters
 Fs = 1000; Ts = 1/Fs;
 R=4;C=1;
-%%
+%% Define numerical helper functions
 approx = @(value,acc) round(value/acc)*acc;
 round_up = @(value,acc) floor(value) + ceil( (value-floor(value))/acc) * acc;
 rand_rng = @(a,b) a + (b-a)*rand;
@@ -16,7 +21,7 @@ rand_rng_arry = @(a,b,c) a + (b-a)*rand(c,1);
 %% Spurious PAC
 %% =====================================================
 
-%%
+%% Configure the analysis interval
 tspan = 0:Ts:25-Ts;%(N*Ts-Ts);
 N = length(tspan);
 fftn = 4000;%Fs/N;
@@ -89,13 +94,11 @@ figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gc
 sgtitle('Commod after removing harmonics');
 
 
-%%
+%% Visualise the current results
 figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontSize', 18);
 
 
 
-%%
-%%
 
 %% =====================================================
 %% Local functions
@@ -103,6 +106,11 @@ figure; imagesc(fL_vals, fH_vals, Comods{1}); colorbar; axis xy; set(gca, 'FontS
 
 %% Spike train
 function [spike_train] = spike_signal(mean_interval,N,jitter,amplitude,width_samples,Fs)
+%SPIKE_SIGNAL Generate a jittered Gaussian spike train on pink noise.
+%   MEAN_INTERVAL and JITTER are in milliseconds, N is the sample count,
+%   AMPLITUDE sets the spike height, WIDTH_SAMPLES is the Gaussian full width
+%   at half maximum, and FS is the sampling rate. SPIKE_TRAIN is the resulting
+%   noisy periodic-transient signal.
 %----------------- Generate pink noise -----------------------
 white = randn(1, N);
 f = fft(white);
