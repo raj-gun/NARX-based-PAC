@@ -236,25 +236,3 @@ s_HF1 = m .* (1 + a.*s_LF) .* s_HF;
 if delay_ind~=0; s_HF1_shft = zeros(size(s_HF1)); s_HF1_shft(delay_ind:end) = s_HF1(1:end-delay_ind+1); else; s_HF1_shft = s_HF1; end
 s_final = s_LF + s_HF1_shft;
 end
-%% Surrogate-signal generation
-
-function [surr] = randm_swap_surrg(data, nsurr, corr_min)
-%RANDM_SWAP_SURRG Generate low-correlation permutation surrogates.
-%   DATA is the input column vector, NSURR is the number of surrogates, and
-%   CORR_MIN is the maximum accepted absolute correlation with DATA. SURR
-%   contains one randomised surrogate per column.
-dat_len = length(data);
-surr = zeros(dat_len,nsurr);
-parfor i=1:nsurr
-    while 1
-        rng shuffle;
-        surr_dat = data( randperm(dat_len) , 1 );
-        corr_mat = corrcoef([surr_dat, data]);
-        corr_surr_dat = abs(corr_mat(1,2));
-        if corr_surr_dat <= corr_min
-            surr(:,i) = surr_dat;
-            break;
-        end
-    end
-end
-end
