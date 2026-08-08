@@ -126,9 +126,6 @@ figure; imagesc(fL_vals, fH_vals, Comod_harmonic_rmv); colorbar; axis xy; set(gc
 [HF_MI_score_1_2, HF_MI_score_final_2, Comod_intrmd] = SpuCup_intrmd_2(fL_vals, fH_vals, Comods{1}, diff_comod, All_freq_comb_1, phs_data_mat, Fs, 1);
 figure; imagesc(fL_vals, fH_vals, Comod_intrmd); colorbar; axis xy; set(gca, 'FontSize', 18); hold on;
 
-[Comod_harmonic] = AM_var_commod(All_freq_comb_1, phs_data_mat, fL_vals, fH_vals);
-figure; imagesc(fL_vals, fH_vals, Comod_harmonic); colorbar; axis xy; set(gca, 'FontSize', 18);
-
 
 %% Local functions
 %% Generate slow- and fast-frequency signals
