@@ -58,7 +58,7 @@ na1=1;na2=1; % Maximum and minimum output lags
 nb1=[1,1]; % Minimum input lags
 nl_ord_max=2; % Maximum order of polynomial nonlinearity considered
 x_iOFR = [false,false]; % Run more than one iteration of iOFR for [linear model ,nonlinear model]
-stp_cri = {'PRESS_thresh', 'PRESS_min'}; D1_thresh = [10^(-3),10^(-6)]; %[10^(-3),10^(-6)]; % Stoping criteria for [linear model ,nonlinear model]. PRESS_thresh/BIC_thresh
+stp_cri = {'PRESS_thresh', 'PRESS_min'}; D1_thresh = [10^(-3),[]]; %[10^(-3),10^(-6)]; % Stoping criteria for [linear model ,nonlinear model]. PRESS_thresh/BIC_thresh
 is_bias=1; % Specify if bias/DC off set is required, 0, or not, 1.
 KSA_h=20; % Specify the number of steps for k-steps ahead prediction
 sim=[1,1].*vrb; % Specify whether to simulate model and display results respectively
