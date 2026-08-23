@@ -53,6 +53,10 @@ The standalone input-only system-identification code required by NARX-PAC is inc
 The principal grid-search function is [`pac_miso_Cmdg_mod_21`](NARX_PAC/pac_miso_Cmdg_mod_21.m). A basic call has the following form:
 
 ```matlab
+addpath('\<path-to>\NonSysID-i\');
+addpath('\<path-to>\NARX_PAC\');
+addpath('\<path-to>\NARX_PAC\Utils\');
+
 fL_vals = 4:1:10;
 fH_vals = 30:1:100;
 filt_typ = {'sbp','sbp'}; 
