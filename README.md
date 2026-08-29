@@ -111,14 +111,13 @@ arXiv: [2603.08866](https://arxiv.org/abs/2603.08866)
 DOI: [10.48550/arXiv.2603.08866](https://doi.org/10.48550/arXiv.2603.08866)
 
 ```bibtex
-@misc{Gunawardena2026,
-  title = {A Dynamical Systems and System Identification Framework for Phase-Amplitude Coupling Analysis},
-  author = {Gunawardena, Rajintha and He, Fei},
-  year = {2026},
-  eprint = {2603.08866},
-  archivePrefix = {arXiv},
-  primaryClass = {q-bio.NC},
-  doi = {10.48550/arXiv.2603.08866},
-  url = {https://arxiv.org/abs/2603.08866}
+@misc{gunawardena2026dynamicalsystemsidentificationframework,
+      title={A Dynamical Systems and System Identification Framework for Phase Amplitude Coupling Analysis}, 
+      author={Rajintha Gunawardena and Fei He},
+      year={2026},
+      eprint={2603.08866},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.NC},
+      url={https://arxiv.org/abs/2603.08866}, 
 }
 ```
