@@ -111,7 +111,7 @@ arXiv: [2603.08866](https://arxiv.org/abs/2603.08866)
 DOI: [10.48550/arXiv.2603.08866](https://doi.org/10.48550/arXiv.2603.08866)
 
 ```bibtex
-@misc{gunawardena2026dynamicalsystemsidentificationframework,
+@misc{gunawardena2026,
       title={A Dynamical Systems and System Identification Framework for Phase Amplitude Coupling Analysis}, 
       author={Rajintha Gunawardena and Fei He},
       year={2026},
