@@ -142,7 +142,7 @@ freqs_filt_dat_cntnr_1 = freqs_filt_dat_cntnr(:,:,Final_pos_freq_ind_incld);
 % ==================================================================
 % Algorithm 2: identify a second-order input-only NARX model for each
 % shortlisted pair and simulate its canonical PAC components.
-parfor i = 1:no_probes_1 % find(sum(pos_freq_comp_vec_1==[7,63],2)==2) %
+parfor i = 1:no_probes_1 % find(sum(pos_freq_comp_vec_1==[6,57],2)==2) % 
     pos_freq_comp = pos_freq_comp_vec_1(i,:);
     s_LF_HF_filt_dat = freqs_filt_dat_cntnr_1(:,:,i);%freqs_filt_dat_cntnr{i,1};2
 
